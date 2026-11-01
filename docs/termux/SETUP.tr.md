@@ -73,7 +73,7 @@ cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc &&
 4. **Özel komut çalışmıyor** — `nova cmd` listesini kontrol et ve `source ~/.bashrc` çalıştır.
 5. **Eski prompt değişti** — kurulumda oluşan `.nova-backup-*` dosyalarını incele. `nova restore` tüm `~/.bashrc` dosyasını son yedekle değiştirir ve daha yeni değişiklikleri silebilir.
 
-## 7. Kaldırma ve güvenlik {#uninstall}
+## 7. Kaldırma ve güvenlik
 
 Otomatik tema geri yüklemesini kapatmak ve Nova başlangıç satırlarıyla komutunu kaldırmak için bu bloğu çalıştır. Önceki terminal renkleri otomatik olarak geri gelmez.
 

@@ -73,7 +73,7 @@ cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc &&
 4. **Xüsusi komanda işləmir** — `nova cmd` ilə siyahını yoxla və `source ~/.bashrc` işlə.
 5. **Başqa prompt dəyişdi** — quraşdırıcının `.nova-backup-*` nüsxələrini yoxla. `nova restore` bütün `~/.bashrc`-ni son ehtiyat nüsxəsi ilə əvəz edir; sonrakı dəyişikliklərin itə bilər.
 
-## 7. Silmə və təhlükəsizlik {#uninstall}
+## 7. Silmə və təhlükəsizlik
 
 Nova-nın avtomatik aktivləşməsini söndürmək və quraşdırma hook-larını silmək üçün bu blokdan istifadə et. Bu addımlar mövcud terminal rənglərini avtomatik əvvəlki hala qaytarmır.
 

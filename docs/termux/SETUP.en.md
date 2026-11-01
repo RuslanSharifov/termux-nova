@@ -73,7 +73,7 @@ cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc &&
 4. **Custom command won't work** — check `nova cmd` and run `source ~/.bashrc`.
 5. **An old prompt changed** — review the `.nova-backup-*` files made during installation. `nova restore` replaces your whole `~/.bashrc` with the latest backup, possibly losing later edits.
 
-## 7. Uninstall and safety {#uninstall}
+## 7. Uninstall and safety
 
 Use this block to disable startup restoration and remove Nova's shell hooks and installed command. It does not automatically restore your prior terminal colors.
 

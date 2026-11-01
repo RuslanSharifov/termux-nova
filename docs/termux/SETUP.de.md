@@ -73,7 +73,7 @@ cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc &&
 4. **Eigener Befehl funktioniert nicht** — mit `nova cmd` prüfen und `source ~/.bashrc` ausführen.
 5. **Vorheriger Prompt wurde verändert** — `.nova-backup-*`-Dateien prüfen. `nova restore` ersetzt die gesamte `~/.bashrc` durch das letzte Backup und kann neuere Änderungen löschen.
 
-## 7. Deinstallation und Sicherheit {#uninstall}
+## 7. Deinstallation und Sicherheit
 
 Dieser Block deaktiviert die automatische Wiederherstellung und entfernt Nova-Startzeilen sowie das Kommando. Frühere Terminalfarben werden nicht automatisch wiederhergestellt.
 
