@@ -1,94 +1,34 @@
-# Ausführliche Windows-CMD-Installationsanleitung
+# Termux Nova — Windows-CMD-Installation
 
-> **Termux Nova v2.x** · **DE** · [Termux Android](../termux/SETUP.de.md) · [Documentation index](../README.md)
+[← README und Demo](../../README.md) · [Android-Termux-Anleitung](../termux/SETUP.de.md)
 
-Diese Anleitung betrifft die **Windows-Version** in `cmd.exe` oder im Command-Prompt-Profil von Windows Terminal. Für Android siehe [Termux-Anleitung](../termux/SETUP.de.md). Windows verwendet `windows/install.cmd`; `pkg` ist kein Windows-Befehl.
+## 1. Installation — ZIP laden und install.cmd doppelklicken
 
-## Requirements / 01
+**Unter Windows müssen keine Installationsbefehle kopiert werden.** Einfach diese 4 Schritte:
 
-Windows 10/11, integriertes Windows PowerShell 5.1, Git oder ZIP-Download sowie idealerweise Windows Terminal für Farbdesigns. Administratorrechte sind normalerweise nicht nötig. Ohne `winget` Git for Windows manuell installieren oder ZIP verwenden.
+1. **[termux-nova ZIP herunterladen](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip)**.
+2. ZIP-Archiv entpacken.
+3. Den Ordner `termux-nova-main`, dann den Unterordner `windows` öffnen.
+4. **`install.cmd` doppelklicken**, die Installationsfragen beantworten und anschließend **ein neues CMD-Fenster öffnen**.
 
-## 02 — Prepare Command Prompt
+**Wichtig:** Wer eigene CMD-Autostartskripte verwendet, sollte AutoRun vor Schritt 4 sichern. Nova kann den Wert `HKCU\Software\Microsoft\Command Processor\AutoRun` überschreiben. Die optionale Sicherung steht weiter unten.
 
-**1. CMD vorbereiten.** Eingabeaufforderung über Start oder Windows Terminal → Command Prompt öffnen. Git bei verfügbarem `winget` installieren, sonst ZIP-Methode verwenden. Nach Git-Installation ein **neues CMD-Fenster** öffnen.
+Der Installer kopiert Nova über PowerShell ins Benutzerprofil und ergänzt PATH. Für Farben wird Windows Terminal empfohlen. `doskey`-Makros funktionieren im Profil **Command Prompt (CMD)**, nicht in PowerShell.
 
-```cmd
-winget install --id Git.Git -e
-```
+## 2. Nova verwenden
 
-Check Git in a **new** CMD window:
-
-```cmd
-git --version
-where git
-```
-
-Optional Windows Terminal install (if `winget` is present):
+In einem neuen CMD-Fenster `nova console` eingeben. Im Menü Pfeiltasten + Enter oder Nummer + Enter verwenden.
 
 ```cmd
-winget install --id Microsoft.WindowsTerminal -e
-```
-
-## 03 — Download or clone from GitHub
-
-**2. Repository auf den PC klonen.** Diese Befehle laden das Projekt nach Downloads. `cd /d` wechselt Laufwerk und Ordner. `dir` sollte `install.cmd`, `install.ps1`, `nova.ps1` anzeigen.
-
-```cmd
-cd /d "%USERPROFILE%\Downloads"
-git clone https://github.com/RuslanSharifov/termux-nova.git
-cd /d "%USERPROFILE%\Downloads\termux-nova\windows"
-dir
-```
-
-**Alternative: ZIP ohne Git.** Link im Browser öffnen, Archiv nach Downloads entpacken und zum Projekt-Unterordner `windows` wechseln. Den Pfad an den tatsächlichen Entpackort anpassen.
-
-[Download main.zip](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip)
-
-```cmd
-cd /d "%USERPROFILE%\Downloads\termux-nova-main\windows"
-dir
-```
-
-## 04 — Back up CMD AutoRun
-
-**3. CMD AutoRun vorab prüfen und sichern.** Nova schreibt für Banner und `doskey`-Makros den Benutzereintrag `HKCU\Software\Microsoft\Command Processor\AutoRun`. **Ein vorhandener AutoRun-Eintrag kann überschrieben werden.** Mit `reg query` prüfen und den vorhandenen Schlüssel über `reg export` sichern. Ein Exportfehler bei nicht vorhandenem Schlüssel ist normal.
-
-```cmd
-reg query "HKCU\Software\Microsoft\Command Processor" /v AutoRun
-reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autostart-before-nova.reg" /y
-```
-
-## 05 — Install Windows version
-
-**4. Windows-Installer starten.** Im Ordner `windows` `install.cmd` ausführen. Das startet PowerShell 5.1 mit `-ExecutionPolicy Bypass` nur für diesen Prozess; die globale Richtlinie bleibt unverändert.
-
-```cmd
-install.cmd
-```
-
-Equivalent manual command (from the `windows` folder):
-
-```cmd
-powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
-```
-
-Der Installer kopiert `nova.ps1`, `nova.cmd` und `themes.json` nach `%APPDATA%\termux-nova`, ergänzt den Benutzer-`PATH`, setzt CMD AutoRun-Hooks, fragt nach automatischer Wiederherstellung (**Enter = ja**) und versucht, `nova-dark` in Windows Terminal anzuwenden. Danach **ein neues CMD-Fenster öffnen**, damit PATH und AutoRun geladen werden.
-
-## 06 — Verify and open console
-
-**5. Installation prüfen und Menü öffnen.** `where nova` zeigt den Pfad zum Launcher. `nova console` unterstützt Pfeil hoch/runter und Enter oder Zahl + Enter. `nova doctor` zeigt Diagnosedaten.
-
-```cmd
-where nova
-nova doctor
 nova console
 nova list
 nova current
+nova doctor
 ```
 
-## 07 — Apply themes and control startup
+## 3. Designs und automatischer Start
 
-**6. Designs und CMD-Verhalten.** `nova set dracula` passt das Farbschema in Windows Terminal `settings.json` an; die klassische Konsole zeigt es eventuell nicht. In Windows Terminal ein **Command-Prompt-Profil** wählen: CMD-Makros funktionieren nicht im PowerShell-Profil. Startbanner und Banner nach `cls` lassen sich in `nova console` umschalten.
+Designs: `nova-dark`, `dracula`, `gruvbox`, `nord`. Farben wirken hauptsächlich in Windows Terminal. `nova auto on` stellt das gewählte Design beim Start wieder her. Banner beim Start und nach `cls` lassen sich über `nova console` einstellen.
 
 ```cmd
 nova set dracula
@@ -97,69 +37,52 @@ nova set gruvbox
 nova set nova-dark
 nova auto on
 nova banner
-nova hook
 ```
 
-## 08 — Custom commands: create / read / edit / delete
+## 4. Eigene Befehle — hinzufügen, anzeigen, ändern, löschen
 
-**7. Eigene Befehle hinzufügen, ändern, löschen.** `///` trennt sequenzielle Schritte. Das Git-Beispiel benötigt Git; das optionale npm-Beispiel erfordert eine separate Node.js/npm-Installation. Nach Makroänderungen ein neues CMD-Fenster öffnen.
+`///` trennt nacheinander auszuführende Schritte. Für das Beispiel muss Git for Windows installiert sein. Nach Änderungen ein **neues CMD-Fenster** öffnen, damit die Makros neu geladen werden.
 
 ```cmd
 nova cmd add "git quick" "git status /// git log -1 --oneline"
 nova cmd
 nova cmd edit "git quick" "git status --short"
 nova cmd rm "git quick"
-nova cache clear
 ```
 
-Optional example for projects with Node.js/npm already installed:
+## 5. Aktualisierung
+
+Die aktuelle [GitHub-ZIP-Datei](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip) herunterladen, entpacken, die neue `termux-nova-main/windows/install.cmd` starten und CMD neu öffnen. Bei Neuinstallation kann AutoRun erneut überschrieben werden.
+
+## 6. Optional: CMD AutoRun sichern
+
+**Vor der Installation** in CMD mit diesen Befehlen AutoRun prüfen und den Registry-Schlüssel exportieren. Wenn der Schlüssel fehlt, ist der Exportfehler normal. Eine `.reg`-Datei vor späterer Wiederherstellung prüfen.
 
 ```cmd
-nova cmd add "npm run full" "npm install /// npm run dev"
-nova cmd
+reg query "HKCU\Software\Microsoft\Command Processor" /v AutoRun
+reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autostart-before-nova.reg" /y
 ```
 
-## 09 — Update an existing Git clone
+## 7. Fehlerbehebung
 
-**8. Aktualisieren.** Bei Git-Klon `git pull --ff-only` und danach `install.cmd` starten. Bei ZIP-Installation das Archiv neu laden und aus dem neuen `windows`-Ordner installieren.
+1. **`nova` wird nicht erkannt** — CMD neu öffnen, `where nova` prüfen und eventuell `install.cmd` erneut starten.
+2. **Design ändert sich nicht** — Command-Prompt-Profil in Windows Terminal verwenden und `nova doctor` ausführen. Kommentare in `settings.json` können das Parsen verhindern.
+3. **Banner fehlt** — `nova hook` in CMD ausführen und ein neues Fenster öffnen; `cmd /d` deaktiviert AutoRun.
+4. **Eigener Befehl funktioniert nicht** — `nova cmd` prüfen und CMD neu öffnen.
 
-```cmd
-cd /d "%USERPROFILE%\Downloads\termux-nova"
-git status
-git pull --ff-only
-cd windows
-install.cmd
-```
+## 8. Deinstallation und Datenschutz {#uninstall}
 
-## 10 — Troubleshooting
-
-1. `'nova' is not recognized` — neues CMD öffnen, `where nova` prüfen und bei Bedarf `install.cmd` erneut starten.
-2. Farben ändern sich nicht — Windows Terminal verwenden und `nova doctor` ausführen. Kommentare in `settings.json` können das Einlesen verhindern.
-3. Kein Banner — CMD-Profil verwenden, `nova hook` starten und neues Fenster öffnen. `cmd /d` überspringt AutoRun.
-4. `cls`-Makro funktioniert nicht — `nova hook` erneut ausführen und CMD neu öffnen; `doskey`-Makros gelten nicht in PowerShell.
-5. Altes AutoRun verschwunden — gespeichertes `.reg`-Backup prüfen; vor Wiederherstellung aktuellen Registry-Stand sichern.
-
-## 11 — Uninstall and privacy
-
-**9. Entfernen.** Ein eigener Windows-Uninstaller ist derzeit nicht enthalten. Zuerst `nova auto off`. Über `reg query` sicherstellen, dass AutoRun noch von Nova stammt, danach löschen oder das ursprüngliche Registry-Backup wiederherstellen. `%APPDATA%\termux-nova` enthält eigene Befehle: vorher sichern. Den Ordner in Windows *Environment Variables* aus dem Benutzer-`PATH` entfernen. Für frühere Terminalfarben `settings.json.nova-backup` prüfen; häufige Designwechsel können dieses Backup überschrieben haben.
-
-Run the first command in CMD. **Only delete AutoRun if it contains Nova's hook and you have a backup of any previous value.**
+Erst automatische Wiederherstellung abschalten und AutoRun prüfen. **Den AutoRun-Wert nur löschen, wenn er noch zu Nova gehört**; andernfalls könnten andere Startskripte beschädigt werden. Eigene Befehle unter `%APPDATA%\termux-nova` sichern, dann den Ordner löschen und über Windows Environment Variables aus dem Benutzer-PATH entfernen. Der Cache `%LOCALAPPDATA%\termux-nova` kann ebenfalls gelöscht werden.
 
 ```cmd
 nova auto off
 reg query "HKCU\Software\Microsoft\Command Processor" /v AutoRun
-reg delete "HKCU\Software\Microsoft\Command Processor" /v AutoRun /f
 ```
 
-**Optional, irreversible removal of the installed tool and user data** (after exporting any custom commands you need):
+Für frühere Windows-Terminal-Farben `settings.json.nova-backup` prüfen; wiederholte Designwechsel können das Backup überschrieben haben. Keine Passwörter oder Tokens in eigenen Befehlen speichern.
 
-```cmd
-rmdir /s /q "%APPDATA%\termux-nova"
-rmdir /s /q "%LOCALAPPDATA%\termux-nova"
-```
-
-Eigene Befehle liegen unter `%APPDATA%\termux-nova\commands`. Keine Geheimnisse oder Tokens dort speichern. Änderungen an Registry und Windows-Terminal-Einstellungen vorab prüfen.
+**Umfang:** Diese Version integriert sich in Windows CMD/Windows Terminal, verändert aber keine nativen Android-Menüs.
 
 ---
 
-**Autor:** rugo · [RuslanSharifov](https://github.com/RuslanSharifov). [Alle Sprachen und Plattformen](../README.md).
+Erstellt von **rugo · Ruslan Sharifov**. · [GitHub](https://github.com/RuslanSharifov/termux-nova)
