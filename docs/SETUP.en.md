@@ -1,9 +1,19 @@
-# Termux setup — EN
+# Termux Nova — English
 
-This guide has moved to the expanded Termux documentation:
+## Android Termux — copy and paste everything once
 
-**[Open the detailed Android Termux installation guide](termux/SETUP.en.md)**
+```bash
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
+```
 
-For Windows CMD, use **[the Windows guide](cmd/SETUP.en.md)** instead.
+This page is kept so existing links still work. The new guide has full usage, themes, custom commands, and troubleshooting.
 
-[All languages and platforms](README.md) · rugo / RuslanSharifov
+**[Detailed setup and usage guide](termux/SETUP.en.md)** · [Windows CMD](cmd/SETUP.en.md)
+
+[Language and platform selection](README.md) · **rugo / Ruslan Sharifov**

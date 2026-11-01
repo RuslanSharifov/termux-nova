@@ -1,9 +1,19 @@
-# Termux setup — TR
+# Termux Nova — Türkçe
 
-This guide has moved to the expanded Termux documentation:
+## Android Termux — tamamını bir kez kopyala-yapıştır
 
-**[Open the detailed Android Termux installation guide](termux/SETUP.tr.md)**
+```bash
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
+```
 
-For Windows CMD, use **[the Windows guide](cmd/SETUP.tr.md)** instead.
+Bu sayfa eski bağlantılar çalışsın diye tutulur. Yeni rehber kullanım, temalar, özel komutlar ve sorun gidermeyi içerir.
 
-[All languages and platforms](README.md) · rugo / RuslanSharifov
+**[Ayrıntılı kurulum ve kullanım rehberi](termux/SETUP.tr.md)** · [Windows CMD](cmd/SETUP.tr.md)
+
+[Dil ve platform seçimi](README.md) · **rugo / Ruslan Sharifov**

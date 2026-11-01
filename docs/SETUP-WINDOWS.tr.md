@@ -1,9 +1,16 @@
-# Windows CMD setup — TR
+# Termux Nova — Windows CMD · Türkçe
 
-This guide has moved to the expanded Windows CMD documentation:
+## Windows CMD — ZIP indir ve çift tıkla
 
-**[Open the detailed Windows CMD installation guide](cmd/SETUP.tr.md)**
+1. [ZIP dosyasını indir](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip).
+2. Arşivi çıkar.
+3. `termux-nova-main/windows/` klasörünü aç.
+4. **`install.cmd` dosyasına çift tıkla**, kurulum sorularını yanıtla ve yeni CMD penceresi aç.
 
-For Android Termux, use **[the Termux guide](termux/SETUP.tr.md)** instead.
+**Dikkat:** Windows kurulumu CMD AutoRun ayarını değiştirir. Mevcut AutoRun ayarını önce yedekle.
 
-[All languages and platforms](README.md) · rugo / RuslanSharifov
+Bu sayfa eski bağlantılar çalışsın diye tutulur. Yeni rehber kullanım, temalar, özel komutlar ve sorun gidermeyi içerir.
+
+**[Ayrıntılı kurulum ve kullanım rehberi](cmd/SETUP.tr.md)** · [Android Termux](termux/SETUP.tr.md)
+
+[Dil ve platform seçimi](README.md) · **rugo / Ruslan Sharifov**

@@ -8,7 +8,7 @@
 
 ![Illustrative Termux Nova demo: Android Termux on the left, Windows CMD on the right](docs/assets/termux-cmd-demo.svg)
 
-*Demo placeholder — one combined Android + PC preview. Replace the image at `docs/assets/termux-cmd-demo.svg` with your own screenshot later.*
+*Demo placeholder — one combined Android + PC preview, not a real screenshot. Later, upload your own image (for example `docs/assets/termux-cmd-demo.png`) and update the image link above.*
 
 [📘 All setup languages](SETUP.md) · [🧩 Commands](#how-to-use-nova) · [🌍 Languages](#setup-in-6-languages)
 
@@ -36,12 +36,10 @@ clear
 
 ## 🖥️ Install — Windows CMD (no commands to copy)
 
-<ol>
-<li><strong><a href="https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip">Download termux-nova ZIP</a>.</strong></li>
-<li>Extract the ZIP archive.</li>
-<li>Open <code>termux-nova-main/windows/</code>.</li>
-<li><strong>Double-click <code>install.cmd</code>.</strong> Follow the installer prompt and open a new Windows CMD / Windows Terminal Command Prompt window.</li>
-</ol>
+1. **[Download termux-nova ZIP](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip).**
+2. Extract the ZIP archive.
+3. Open `termux-nova-main/windows/`.
+4. **Double-click `install.cmd`.** Follow the installer prompts and open a new CMD window.
 
 ✅ Done. Open <strong>Command Prompt</strong> (not PowerShell) and type `nova console` to open settings. Windows Terminal is recommended for color themes.
 
@@ -135,7 +133,7 @@ cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc &&
 
 - **Termux:** `nova doctor` checks the hooks. The installer may comment out competing prompt configuration in rc files, after creating backups. `nova restore` restores the latest `.bashrc` backup but can overwrite later changes.
 - **Windows:** use Windows Terminal with a **Command Prompt** profile to apply themes and CMD macros. The installer uses `HKCU\Software\Microsoft\Command Processor\AutoRun`; preserve an existing value before installation. Windows Terminal `settings.json` may also be changed.
-- **Uninstall:** see [Termux instructions](docs/termux/SETUP.en.md#uninstall) or [Windows CMD instructions](docs/cmd/SETUP.en.md#uninstall). Back up custom shortcuts before removing their storage files.
+- **Uninstall:** see [Termux instructions](docs/termux/SETUP.en.md) or [Windows CMD instructions](docs/cmd/SETUP.en.md). Back up custom shortcuts before removing their storage files.
 
 ## 📂 Project files
 

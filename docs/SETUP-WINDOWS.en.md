@@ -1,9 +1,16 @@
-# Windows CMD setup — EN
+# Termux Nova — Windows CMD · English
 
-This guide has moved to the expanded Windows CMD documentation:
+## Windows CMD — download ZIP and double-click
 
-**[Open the detailed Windows CMD installation guide](cmd/SETUP.en.md)**
+1. [Download the ZIP](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip).
+2. Extract the archive.
+3. Open `termux-nova-main/windows/`.
+4. **Double-click `install.cmd`**, answer the prompts, and open a new CMD window.
 
-For Android Termux, use **[the Termux guide](termux/SETUP.en.md)** instead.
+**Warning:** The Windows installer changes CMD AutoRun. Back up any existing AutoRun setup first.
 
-[All languages and platforms](README.md) · rugo / RuslanSharifov
+This page is kept so existing links still work. The new guide has full usage, themes, custom commands, and troubleshooting.
+
+**[Detailed setup and usage guide](cmd/SETUP.en.md)** · [Android Termux](termux/SETUP.en.md)
+
+[Language and platform selection](README.md) · **rugo / Ruslan Sharifov**
