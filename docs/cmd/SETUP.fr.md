@@ -70,7 +70,7 @@ reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autost
 3. **La bannière manque** — lancez `nova hook` dans CMD et ouvrez une nouvelle fenêtre ; `cmd /d` désactive AutoRun.
 4. **Une commande personnelle échoue** — vérifiez `nova cmd` et rouvrez CMD.
 
-## 8. Désinstallation et confidentialité {#uninstall}
+## 8. Désinstallation et confidentialité
 
 Désactivez d'abord la restauration automatique et vérifiez AutoRun. **Supprimez la valeur AutoRun uniquement si elle appartient encore à Nova**, sinon d'autres scripts de démarrage pourraient être affectés. Sauvegardez les commandes de `%APPDATA%\termux-nova`, supprimez le dossier et retirez-le du PATH utilisateur dans Windows Environment Variables. Le cache `%LOCALAPPDATA%\termux-nova` peut aussi être supprimé.
 

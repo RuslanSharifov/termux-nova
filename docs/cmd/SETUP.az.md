@@ -70,7 +70,7 @@ reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autost
 3. **Banner görünmür** — CMD-də `nova hook` işlə və pəncərəni yenilə; `cmd /d` AutoRun-u söndürür.
 4. **Öz komandam işləmir** — `nova cmd` siyahısını yoxla və yeni CMD aç.
 
-## 8. Silmə və məxfilik {#uninstall}
+## 8. Silmə və məxfilik
 
 Əvvəl avtomatik bərpanı söndür və AutoRun dəyərini yoxla. **Yalnız AutoRun dəyəri Nova-ya məxsusdursa** onu sil, yoxsa əvvəlki quraşdırmanı poza bilərsən. Sonra `%APPDATA%\termux-nova` qovluğunun ehtiyatını saxlayıb sil və Windows Environment Variables-də istifadəçi PATH-dən həmin qovluğu çıxart. `%LOCALAPPDATA%\termux-nova` cache qovluğu da istəyə görə silinə bilər.
 

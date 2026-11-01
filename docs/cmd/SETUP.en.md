@@ -70,7 +70,7 @@ reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autost
 3. **Banner doesn't appear** — run `nova hook` in CMD and reopen the window; `cmd /d` intentionally disables AutoRun.
 4. **Custom command doesn't run** — inspect `nova cmd` and open a new CMD window.
 
-## 8. Uninstall and privacy {#uninstall}
+## 8. Uninstall and privacy
 
 First disable automatic restore and inspect AutoRun. **Delete the AutoRun value only if it still belongs to Nova**; otherwise you could break other startup scripts. Then back up and delete `%APPDATA%\termux-nova`, and remove that folder from your user PATH in Windows Environment Variables. You may also delete `%LOCALAPPDATA%\termux-nova` cache.
 

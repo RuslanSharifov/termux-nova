@@ -70,7 +70,7 @@ reg export "HKCU\Software\Microsoft\Command Processor" "%USERPROFILE%\cmd-autost
 3. **Afiş görünmüyor** — CMD'de `nova hook` çalıştır ve yeni pencere aç; `cmd /d` AutoRun'ı devre dışı bırakır.
 4. **Özel komut çalışmıyor** — `nova cmd` listesini kontrol et ve yeni CMD aç.
 
-## 8. Kaldırma ve gizlilik {#uninstall}
+## 8. Kaldırma ve gizlilik
 
 Önce otomatik geri yüklemeyi kapat ve AutoRun'ı kontrol et. **AutoRun'ı yalnızca hâlâ Nova'ya aitse sil**; yoksa başka başlangıç betiklerini bozabilirsin. `%APPDATA%\termux-nova` klasöründeki özel komutları yedekle, sonra klasörü kaldır ve kullanıcı PATH'inden Windows Environment Variables içinden çıkar. `%LOCALAPPDATA%\termux-nova` önbelleği de silinebilir.
 
