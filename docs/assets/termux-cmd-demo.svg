@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc">
+<title id="title">Termux Nova Android Termux and Windows CMD combined demo</title>
+<desc id="desc">Illustrative mockup, not actual application screenshots. Android terminal on the left and Windows Terminal CMD on the right, using dark colors and Nova commands.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#091021"/><stop offset=".53" stop-color="#1a1936"/><stop offset="1" stop-color="#142535"/></linearGradient>
+<linearGradient id="pane" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#20233a"/><stop offset="1" stop-color="#101323"/></linearGradient>
+<filter id="shadow" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000000" flood-opacity=".35"/></filter>
+</defs>
+<rect width="1440" height="760" fill="url(#bg)"/>
+<circle cx="70" cy="80" r="200" fill="#8b5cf6" opacity=".07"/>
+<circle cx="1350" cy="700" r="260" fill="#2dd4bf" opacity=".08"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="72" y="76" font-size="46" font-weight="800" fill="#edf1ff" letter-spacing="5">TERMUX NOVA</text>
+<text x="74" y="110" font-size="20" fill="#a5b4d0">Android Termux  +  Windows CMD</text>
+<rect x="66" y="146" width="525" height="532" rx="30" fill="#03060d" stroke="#6b7280" stroke-width="5" filter="url(#shadow)"/>
+<rect x="86" y="168" width="485" height="488" rx="18" fill="url(#pane)"/>
+<rect x="86" y="168" width="485" height="52" rx="18" fill="#292841"/>
+<rect x="86" y="202" width="485" height="18" fill="#292841"/>
+<circle cx="110" cy="193" r="7" fill="#ff7777"/><circle cx="133" cy="193" r="7" fill="#f6c36b"/><circle cx="156" cy="193" r="7" fill="#67ddb3"/>
+<text x="185" y="200" font-size="19" fill="#d8e1fc">TERMUX  •  Android</text>
+<g font-family="monospace">
+<text x="116" y="282" font-size="34" font-weight="bold" fill="#7de8f3" letter-spacing="5">N O V A</text>
+<text x="116" y="317" font-size="15" fill="#a7b7d7">Terminal theme switcher</text>
+<rect x="111" y="342" width="433" height="1" fill="#525875"/>
+<text x="117" y="382" font-size="18" fill="#c7d2fe">$ nova set dracula</text>
+<text x="117" y="419" font-size="17" fill="#f3c46a">◌ Applying theme: dracula</text>
+<text x="117" y="457" font-size="18" fill="#66f0b3">✓ Theme saved: dracula</text>
+<text x="117" y="505" font-size="18" fill="#c7d2fe">$ nova console</text>
+<text x="117" y="542" font-size="16" fill="#d6def2">1) Change theme</text>
+<text x="117" y="575" font-size="16" fill="#d6def2">2) Auto restore: on</text>
+<text x="117" y="609" font-size="16" fill="#d6def2">3) Custom commands</text>
+</g>
+<rect x="620" y="146" width="754" height="532" rx="18" fill="#03060d" stroke="#575b7c" stroke-width="4" filter="url(#shadow)"/>
+<rect x="638" y="165" width="718" height="493" rx="8" fill="url(#pane)"/>
+<rect x="638" y="165" width="718" height="56" rx="7" fill="#252743"/>
+<circle cx="665" cy="193" r="7" fill="#ff7777"/><circle cx="686" cy="193" r="7" fill="#f6c36b"/><circle cx="707" cy="193" r="7" fill="#67ddb3"/>
+<text x="738" y="201" font-size="20" fill="#edf1ff">Windows Terminal  •  CMD</text>
+<g font-family="monospace">
+<text x="677" y="283" font-size="38" font-weight="bold" fill="#ab96ff" letter-spacing="7">N O V A</text>
+<text x="679" y="323" font-size="17" fill="#a7b7d7">by rugo · github.com/RuslanSharifov</text>
+<rect x="677" y="347" width="633" height="1" fill="#525875"/>
+<text x="679" y="387" font-size="21" fill="#dce1f5">C:\&gt; nova console</text>
+<text x="679" y="437" font-size="20" fill="#c0a9ff">  1) Change theme</text>
+<text x="679" y="476" font-size="20" fill="#e5e9fb">  2) Toggle auto restore</text>
+<text x="679" y="515" font-size="20" fill="#e5e9fb">  3) Banner on startup</text>
+<text x="679" y="554" font-size="20" fill="#e5e9fb">  4) Custom commands</text>
+<text x="679" y="612" font-size="17" fill="#89dbd0">↑ ↓ Navigate   •   Enter Select</text>
+</g>
+<rect x="465" y="694" width="509" height="42" rx="20" fill="#292c45" stroke="#646c93"/>
+<text x="719" y="721" font-size="18" fill="#e6defe" text-anchor="middle" letter-spacing="1">DEMO MOCKUP · REPLACE WITH YOUR SCREENSHOT</text>
+</g></svg>

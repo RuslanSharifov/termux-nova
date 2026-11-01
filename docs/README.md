@@ -1,32 +1,37 @@
-# ✦ Termux Nova — Setup / Quraşdırma / Kurulum / Установка / Einrichtung / Installation
+# ✦ Termux Nova — Setup guides in 6 languages
 
-Choose **your operating system first**, then your language. Each guide includes the entire process, from getting the source code to uninstalling.
+Choose your language and platform. **Installation is at the top of every guide; usage and troubleshooting come afterward.**
 
-**Əvvəl cihazını seç, sonra dili. Hər təlimat sıfırdan quraşdırmanı, yeniləməni, xəta həllini və silməyi göstərir.**
-
-| Language | 🤖 Android Termux (`pkg` + `bash install.sh`) | 🖥️ Windows CMD (`install.cmd`) |
+| Language | Android Termux | Windows CMD |
 |---|---|---|
-| 🇦🇿 Azərbaycanca | [Termux setup](termux/SETUP.az.md) | [Windows CMD setup](cmd/SETUP.az.md) |
-| 🇬🇧 English | [Termux setup](termux/SETUP.en.md) | [Windows CMD setup](cmd/SETUP.en.md) |
-| 🇹🇷 Türkçe | [Termux setup](termux/SETUP.tr.md) | [Windows CMD setup](cmd/SETUP.tr.md) |
-| 🇷🇺 Русский | [Termux setup](termux/SETUP.ru.md) | [Windows CMD setup](cmd/SETUP.ru.md) |
-| 🇩🇪 Deutsch | [Termux setup](termux/SETUP.de.md) | [Windows CMD setup](cmd/SETUP.de.md) |
-| 🇫🇷 Français | [Termux setup](termux/SETUP.fr.md) | [Windows CMD setup](cmd/SETUP.fr.md) |
+| 🇦🇿 Azərbaycan | [Termux](termux/SETUP.az.md) | [Windows CMD](cmd/SETUP.az.md) |
+| 🇬🇧 English | [Termux](termux/SETUP.en.md) | [Windows CMD](cmd/SETUP.en.md) |
+| 🇹🇷 Türkçe | [Termux](termux/SETUP.tr.md) | [Windows CMD](cmd/SETUP.tr.md) |
+| 🇷🇺 Русский | [Termux](termux/SETUP.ru.md) | [Windows CMD](cmd/SETUP.ru.md) |
+| 🇩🇪 Deutsch | [Termux](termux/SETUP.de.md) | [Windows CMD](cmd/SETUP.de.md) |
+| 🇫🇷 Français | [Termux](termux/SETUP.fr.md) | [Windows CMD](cmd/SETUP.fr.md) |
 
-## 🤖 Android Termux
+## Quick setup
 
-The [Termux folder](termux/) has guides for Android Termux. The installer changes Termux colors and Bash startup hooks. It does **not** run directly in Windows Command Prompt.
+### Android Termux — one copy/paste
 
-## 🖥️ Windows CMD
+```bash
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
+```
 
-The [CMD folder](cmd/) has guides for the Windows PowerShell-backed Windows CLI installed with `windows/install.cmd`. Windows Terminal is recommended for themes. **Back up your pre-existing CMD AutoRun registry value before installation**, because the current Windows installer may replace it.
+### Windows CMD — ZIP + one double-click
 
-## Quick source links
+1. [Download the GitHub ZIP](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip)
+2. Extract it.
+3. Open the `termux-nova-main/windows` folder.
+4. Double-click `install.cmd`, then open a new CMD session.
 
-- [Repository](https://github.com/RuslanSharifov/termux-nova)
-- [Download ZIP](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip)
-- [Project README](../README.md)
-- [Android installer](../install.sh)
-- [Windows installer](../windows/install.cmd)
+**Windows safety:** the CMD installer changes the current user's AutoRun registry value; preserve an existing setting before running it. Each Windows guide explains the check and backup.
 
-**Maintainer / İmza:** rugo · [RuslanSharifov](https://github.com/RuslanSharifov)
+[Back to README + the combined demo image](../README.md) · **by rugo**
