@@ -1,78 +1,39 @@
-# Ausführliche Termux-Installationsanleitung
+# Termux Nova — Einrichtung unter Android Termux
 
-> **Termux Nova v2.x** · **DE** · [Windows CMD](../cmd/SETUP.de.md) · [Documentation index](../README.md)
+[← README und Demo](../../README.md) · [Windows-CMD-Anleitung](../cmd/SETUP.de.md)
 
-Diese Anleitung erklärt Installation, Einrichtung, Updates, Fehlerbehebung und Entfernung von termux-nova unter **Android Termux**. Für Windows gibt es die [CMD-Anleitung](../cmd/SETUP.de.md).
+## 1. Installation — einmal kopieren und einfügen
 
-## Requirements / 01
-
-Android-Gerät, aktuelle Termux-Version aus F-Droid oder dem offiziellen GitHub, Internetverbindung für die Erstinstallation und genügend Speicherplatz. Root ist nicht erforderlich. Diese Befehle gehören **in Termux**, nicht in Windows CMD.
-
-## 02 — Prepare Termux
-
-**1. Termux vorbereiten.** App öffnen, Paketlisten aktualisieren und Git installieren. `pkg` ist die Termux-Paketverwaltung, `git` lädt das Repository herunter.
-
+**Den gesamten Block unten einmal kopieren und in Termux einfügen.** Er lädt das Repository, installiert Nova und führt zuletzt `clear` aus.
 
 ```bash
-pkg update && pkg upgrade -y
-pkg install -y git
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
 ```
 
+Während der Installation werden möglicherweise andere UI-/Prompt-Tools und die automatische Designwiederherstellung abgefragt. Fragen zuerst lesen; für automatische Wiederherstellung **Enter = ja**. In künftigen interaktiven Termux-Sitzungen startet Nova automatisch.
 
-## 03 — Download the project (Git)
+> Wenn `~/termux-nova` bereits vorhanden ist, stoppt `git clone`. Dann den Abschnitt **Aktualisierung** unten verwenden.
 
-**2. Repository klonen.** `cd ~` wechselt ins Home-Verzeichnis, `git clone` lädt das Projekt herunter und das letzte `cd` öffnet den Projektordner.
+## 2. Nova verwenden
 
-```bash
-cd ~
-git clone https://github.com/RuslanSharifov/termux-nova.git
-cd termux-nova
-ls
-```
-
-**Alternative: ZIP ohne Git.** Diese Befehle laden das Archiv des `main`-Branches. Nur eine Methode auswählen: Git oder ZIP. ZIP-Installationen werden durch erneutes Herunterladen aktualisiert.
+Termux nach der Installation neu öffnen oder die folgenden Befehle ausführen. Das Einstellungsmenü startet mit `nova console`.
 
 ```bash
-pkg install -y curl unzip
-cd ~
-curl -fL https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip -o termux-nova.zip
-unzip termux-nova.zip
-cd termux-nova-main
-ls
-```
-
-## 04 — Install and activate
-
-**3. Installer ausführen.** Mit `ls` prüfen, ob `install.sh`, `nova.sh` und `themes/` vorhanden sind, danach den Bash-Installer starten.
-
-```bash
-ls install.sh nova.sh themes
-bash install.sh
-```
-
-Der Installer installiert `termux-tools` und `curl`, kopiert `nova` und die Designs nach Termux und ergänzt Start-Hooks in `~/.bashrc`. Er fragt, ob andere Prompt-/UI-Tools deaktiviert werden sollen, und legt bei Zustimmung datierte Backups der rc-Dateien an. Bei der Frage nach automatischer Wiederherstellung bedeutet **Enter = ja**, `n` = nein. Standarddesign ist `nova-dark`. Eine neue Termux-Sitzung öffnen oder im aktuellen Bash `source ~/.bashrc` ausführen.
-
-```bash
-source ~/.bashrc
-```
-
-**Achtung:** Die Frage zum Deaktivieren anderer UI-Tools bewusst beantworten. Passende rc-Zeilen werden auskommentiert. Wichtige Shell-Konfiguration vorher separat sichern.
-
-## 05 — Verify and configure
-
-**4. Installation prüfen und Menü öffnen.** `nova doctor` zeigt die Diagnose; `nova console` öffnet das nummerierte Einstellungsmenü. `nova list` zeigt Designs, `nova current` den gespeicherten Zustand.
-
-```bash
-command -v nova
-nova doctor
 nova console
 nova list
 nova current
+nova doctor
 ```
 
-## 06 — Themes and startup
+## 3. Designs und Startverhalten
 
-**5. Designs und Startverhalten.** `nova set dracula` ändert die Farben; `nova auto on` stellt das gespeicherte Design bei künftigen Starts wieder her. Das große Banner kann beim Start und nach `clear` erscheinen; beides ist in `nova console` einstellbar. Android-Schaltflächen werden nicht verändert.
+Enthaltene Designs: `nova-dark`, `dracula`, `nord`, `gruvbox`. `nova auto on` stellt das gespeicherte Design bei neuen Sitzungen wieder her. Banner beim Start und nach `clear` sind in `nova console` konfigurierbar.
 
 ```bash
 nova set dracula
@@ -83,67 +44,50 @@ nova auto on
 nova banner
 ```
 
-## 07 — Custom commands: create, read, update, delete
+## 4. Eigene Befehle — hinzufügen, anzeigen, ändern, löschen
 
-**6. Eigene Befehle anlegen (CRUD).** Ein Auslöser kann mit dem Namen eines installierten Programms beginnen. `///` trennt aufeinanderfolgende Schritte; der nächste startet nur nach Erfolg des vorherigen. Für das Beispiel wird Git benötigt.
+`///` trennt aufeinanderfolgende Schritte. Der nächste startet nur nach erfolgreichem vorherigem Schritt. Das Beispiel verwendet Git (wird installiert).
 
 ```bash
 nova cmd add "git quick" "git status /// git log -1 --oneline"
 nova cmd
 nova cmd edit "git quick" "git status --short"
 nova cmd rm "git quick"
-source ~/.bashrc
 ```
 
-Optional Node.js example (requires `pkg install nodejs` and an npm project):
+Nach Änderungen an eigenen Befehlen Termux neu öffnen oder `source ~/.bashrc` ausführen. Keine Passwörter oder Tokens als Befehl speichern.
+
+## 5. Bestehende Installation aktualisieren
+
+Bei vorhandenem Klon nicht erneut klonen. Stattdessen diesen einen Update-Block einfügen. Installationsfragen können erneut erscheinen.
 
 ```bash
-pkg install -y nodejs
-nova cmd add "npm run full" "npm install /// npm run dev"
-source ~/.bashrc
-npm run full
+cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc && clear
 ```
 
-`nova cache clear` rebuilds generated command wrappers if required.
+## 6. Fehlerbehebung
 
-## 08 — Update an existing Git installation
+1. **`nova: command not found`** — Termux neu öffnen; gegebenenfalls `cd ~/termux-nova && bash install.sh`.
+2. **Farben ändern sich nicht** — `pkg install -y termux-tools` und danach `nova set dracula` ausführen.
+3. **Design wird zurückgesetzt** — `nova current` prüfen und `nova auto on` aktivieren.
+4. **Eigener Befehl funktioniert nicht** — mit `nova cmd` prüfen und `source ~/.bashrc` ausführen.
+5. **Vorheriger Prompt wurde verändert** — `.nova-backup-*`-Dateien prüfen. `nova restore` ersetzt die gesamte `~/.bashrc` durch das letzte Backup und kann neuere Änderungen löschen.
 
-**7. Aktualisieren.** Im geklonten Repository `git pull --ff-only` und anschließend `bash install.sh` ausführen. Lokale Änderungen können Updates blockieren; vorher sichern. Der Installer fragt eventuell Einstellungen erneut ab.
+## 7. Deinstallation und Sicherheit {#uninstall}
 
-```bash
-cd ~/termux-nova
-git status
-git pull --ff-only
-bash install.sh
-source ~/.bashrc
-nova doctor
-```
-
-## 09 — Troubleshooting
-
-**8. Fehlerbehebung.**
-
-1. `nova: command not found` — `bash install.sh` erneut ausführen, `command -v nova` prüfen und neue Sitzung öffnen.
-2. Farben bleiben gleich — `pkg install -y termux-tools` und `nova set dracula` ausführen; App erneut öffnen.
-3. Design wird zurückgesetzt — `nova current` prüfen und `nova auto on` aktivieren.
-4. Eigener Befehl funktioniert nicht — mit `nova cmd` prüfen, danach `source ~/.bashrc` ausführen.
-5. Alter Prompt verschwunden — Backups `~/.bashrc.nova-backup-*` prüfen; `nova restore` ersetzt die gesamte `.bashrc` durch das neueste Backup und kann spätere Änderungen überschreiben.
-
-## 10 — Uninstall and privacy
-
-**9. Deinstallation und Daten.** Automatische Wiederherstellung deaktivieren, die Nova-Hooks aus `.bashrc` und die CLI entfernen. Die letzte Zeile löscht Einstellungen, eigene Befehle und Cache **dauerhaft**; weglassen, wenn Daten erhalten bleiben sollen.
+Dieser Block deaktiviert die automatische Wiederherstellung und entfernt Nova-Startzeilen sowie das Kommando. Frühere Terminalfarben werden nicht automatisch wiederhergestellt.
 
 ```bash
 nova auto off
-sed -i '/# termux-nova$/d' ~/.bashrc
-sed -i '/# termux-nova$/d' ~/.bash_profile
+[ -f "$HOME/.bashrc" ] && sed -i '/# termux-nova$/d' "$HOME/.bashrc"
+[ -f "$HOME/.bash_profile" ] && sed -i '/# termux-nova$/d' "$HOME/.bash_profile"
 rm -f "$PREFIX/bin/nova"
-# OPTIONAL — irreversible data deletion:
-rm -rf ~/.config/termux-nova ~/.cache/termux-nova
 ```
 
-Eigene Befehle liegen in `~/.config/termux-nova/commands`. Keine Passwörter oder Tokens eintragen: die Daten werden lokal gespeichert und ausgeführt. Diese Version enthält noch keine SQLite-Nutzungsstatistik oder Ghost-Text-Vervollständigung.
+**Optionale endgültige Datenlöschung:** benötigte Daten zuerst sichern, dann `rm -rf ~/.config/termux-nova ~/.cache/termux-nova` ausführen.
+
+**Hinweis:** Die aktuelle Bash-Version verwaltet Designs und eigene Befehle. SQLite-Nutzungsstatistik, Ghost-Text-Vorschläge und Tab-Übernahme sind noch nicht umgesetzt. Android-Menüs und Schaltflächen bleiben unverändert.
 
 ---
 
-**Autor:** rugo · [RuslanSharifov](https://github.com/RuslanSharifov). [Alle Sprachen und Plattformen](../README.md).
+Erstellt von **rugo · Ruslan Sharifov**. · [GitHub](https://github.com/RuslanSharifov/termux-nova)

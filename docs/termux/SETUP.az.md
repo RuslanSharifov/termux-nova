@@ -1,78 +1,39 @@
-# Termux üçün tam quraşdırma təlimatı
+# Termux Nova — Android Termux quraşdırması
 
-> **Termux Nova v2.x** · **AZ** · [Windows CMD](../cmd/SETUP.az.md) · [Documentation index](../README.md)
+[← Əsas README və demo](../../README.md) · [Windows CMD təlimatı](../cmd/SETUP.az.md)
 
-Bu sənəd Android-də **Termux** tətbiqində termux-nova-nın sıfırdan quraşdırılmasını, sazlanmasını, yenilənməsini və silinməsini izah edir. Windows kompüterindən istifadə edirsənsə, [CMD təlimatına](../cmd/SETUP.az.md) keç.
+## 1. Quraşdırma — bir dəfə kopyala-yapışdır
 
-## Requirements / 01
-
-Android cihaz, Termux-un aktual F-Droid/GitHub buraxılışı, ilk quraşdırma üçün internet bağlantısı və təxminən bir neçə on MB boş yer. Root tələb olunmur. Aşağıdakı kodlar **Termux daxilində** yazılır; Windows CMD-də deyil.
-
-## 02 — Prepare Termux
-
-**1. Termux-u hazırla.** Tətbiqi aç və paket siyahısını yenilə. `pkg` Termux-un paket meneceridir; `git` GitHub repozitoriyasını endirir.
-
+**Aşağıdakı bütün bloku bir dəfə kopyalayıb Termux-a yapışdır.** Repo endiriləcək, quraşdırılacaq və sonunda ekran `clear` ilə təmizlənəcək.
 
 ```bash
-pkg update && pkg upgrade -y
-pkg install -y git
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
 ```
 
+Quraşdırma zamanı başqa UI/prompt alətlərini söndürmək və temanı hər açılışda avtomatik bərpa etmək barədə suallar görünə bilər. Seçimləri oxuyub cavablandır; avtomatik bərpa sualında **Enter = bəli**. Sonrakı Termux sessiyalarında Nova avtomatik aktiv olacaq.
 
-## 03 — Download the project (Git)
+> Əgər `~/termux-nova` artıq mövcuddursa, `git clone` dayanacaq. Bu halda aşağıdakı **Yeniləmə** bölməsindən istifadə et.
 
-**2. Repozitoriyanı klonla.** `cd ~` səni şəxsi qovluğa keçirir, `git clone` layihənin fayllarını yükləyir, sonuncu `cd` isə layihə qovluğuna daxil olur.
+## 2. Nova-dan necə istifadə edilir?
 
-```bash
-cd ~
-git clone https://github.com/RuslanSharifov/termux-nova.git
-cd termux-nova
-ls
-```
-
-**Git istifadə etmədən ZIP variantı.** GitHub `main` budağının arxivini endirmək üçün aşağıdakı alternativ əmrləri işlət. Yalnız iki üsuldan birini seç. ZIP ilə yeniləmək üçün arxivi yenidən endirmək lazımdır.
+Termux-u yenidən aç və ya quraşdırmadan sonra aşağıdakı əmrləri ayrıca işlət. İlk öncə `nova console` ayarlar menyusunu açır.
 
 ```bash
-pkg install -y curl unzip
-cd ~
-curl -fL https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip -o termux-nova.zip
-unzip termux-nova.zip
-cd termux-nova-main
-ls
-```
-
-## 04 — Install and activate
-
-**3. Quraşdırıcını işə sal.** Əvvəl cari qovluqda `install.sh`, `nova.sh` və `themes/` olduğunu `ls` ilə yoxla. Sonra Bash quraşdırıcısını başlad.
-
-```bash
-ls install.sh nova.sh themes
-bash install.sh
-```
-
-Quraşdırıcı `termux-tools` və `curl` qurur, `nova` əmri ilə mövzuları Termux-a köçürür və açılış üçün `~/.bashrc` hook-larını əlavə edir. Digər prompt/UI alətlərini söndürməyə icazə soruşur; razılaşsan, rc fayllarının zaman damğalı ehtiyat nüsxələrini yaradır. Avtomatik tema bərpası üçün **Enter = bəli**, `n` = xeyr. Standart tema `nova-dark`-dır. Quraşdırma cari Bash sessiyasında dərhal aktiv görünməyə bilər: yeni Termux sessiyası aç və ya `source ~/.bashrc` işlə.
-
-```bash
-source ~/.bashrc
-```
-
-**Diqqət:** başqa prompt alətlərini deaktiv etmə sualını oxumadan təsdiqləmə. Bu seçim rc fayllarındakı uyğun sətrləri şərhə çevirir. Quraşdırmadan əvvəl vacib özəlləşdirmələrini ayrıca saxla.
-
-## 05 — Verify and configure
-
-**4. İşlədiyini yoxla və paneli aç.** `nova doctor` quraşdırmanı yoxlayır; `nova console` nömrəli ayarlar menyusunu açır. `nova list` mövzuları göstərir, `nova current` saxlanmış vəziyyəti göstərir.
-
-```bash
-command -v nova
-nova doctor
 nova console
 nova list
 nova current
+nova doctor
 ```
 
-## 06 — Themes and startup
+## 3. Temalar və açılış
 
-**5. Mövzu və açılış ayarları.** `nova set dracula` rəngləri dəyişir; `nova auto on` seçilən temanı sonrakı girişlərdə saxlayır. Banner hər açılışda və `clear` əmrindən sonra görünə bilər; hər iki seçim `nova console` daxilində dəyişdirilir. Bu proqram Android-in düymələrini deyil, terminalın rənglərini və shell davranışını dəyişir.
+Daxili temalar: `nova-dark`, `dracula`, `nord`, `gruvbox`. `nova auto on` seçilmiş temanı yeni sessiyada bərpa edir. Başlanğıc banneri və `clear` sonrası banner üçün `nova console` menyusundan istifadə et.
 
 ```bash
 nova set dracula
@@ -83,67 +44,50 @@ nova auto on
 nova banner
 ```
 
-## 07 — Custom commands: create, read, update, delete
+## 4. Xüsusi komandalar — əlavə et, bax, dəyiş, sil
 
-**6. Öz komandalarını yarat (CRUD).** Əmr tetikleyicisi mövcud icra olunan alətin adı ilə başlaya bilər. `///` ardıcıl addımları ayırır; əvvəlki addım uğurlu olarsa növbəti başlayır. `git` üçün nümunə Git-in quraşdırılmış olmasını tələb edir.
+`///` ardıcıl addımları ayırır. Əvvəlki addım uğurlu olarsa, sonrakı işləyir. Aşağıdakı nümunə Git istifadə edir (quraşdırma zamanı Git qurulur).
 
 ```bash
 nova cmd add "git quick" "git status /// git log -1 --oneline"
 nova cmd
 nova cmd edit "git quick" "git status --short"
 nova cmd rm "git quick"
-source ~/.bashrc
 ```
 
-Optional Node.js example (requires `pkg install nodejs` and an npm project):
+Komandanı dəyişdikdən sonra yeni Termux sessiyası aç və ya `source ~/.bashrc` yaz. Öz komandalarına şifrə və token əlavə etmə.
+
+## 5. Yeniləmə — mövcud quraşdırma
+
+Repo artıq klonlanıbsa, onu yenidən klonlama. Bu bir bloku işlət. Quraşdırıcı sualları təkrar verə bilər.
 
 ```bash
-pkg install -y nodejs
-nova cmd add "npm run full" "npm install /// npm run dev"
-source ~/.bashrc
-npm run full
+cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc && clear
 ```
 
-`nova cache clear` rebuilds generated command wrappers if required.
+## 6. Problemlərin həlli
 
-## 08 — Update an existing Git installation
+1. **`nova: command not found`** — Termux-u yenidən aç; lazım olsa `cd ~/termux-nova && bash install.sh` işlə.
+2. **Rənglər dəyişmədi** — `pkg install -y termux-tools`, sonra `nova set dracula` işlə.
+3. **Tema sıfırlanır** — `nova current` yoxla və `nova auto on` yaz.
+4. **Xüsusi komanda işləmir** — `nova cmd` ilə siyahını yoxla və `source ~/.bashrc` işlə.
+5. **Başqa prompt dəyişdi** — quraşdırıcının `.nova-backup-*` nüsxələrini yoxla. `nova restore` bütün `~/.bashrc`-ni son ehtiyat nüsxəsi ilə əvəz edir; sonrakı dəyişikliklərin itə bilər.
 
-**7. Yenilə.** Git ilə klonlanan layihəyə daxil olub `git pull --ff-only` et, sonra `bash install.sh` yenidən işlət. Dəyişmiş yerli fayllar `git pull`-u dayandıra bilər: dəyişikliklərini əvvəlcə saxla. Quraşdırıcı bəzi ayarları yenidən soruşa bilər.
+## 7. Silmə və təhlükəsizlik {#uninstall}
 
-```bash
-cd ~/termux-nova
-git status
-git pull --ff-only
-bash install.sh
-source ~/.bashrc
-nova doctor
-```
-
-## 09 — Troubleshooting
-
-**8. Tez-tez rast gəlinən problemlər.**
-
-1. `nova: command not found` — `bash install.sh`-ı yenidən işə sal, `command -v nova` yoxla və yeni Termux sessiyası aç.
-2. Rənglər dəyişmədi — `pkg install -y termux-tools` və `nova set dracula` işlə; tətbiqi yenidən aç.
-3. Açılışda köhnə tema qayıdır — `nova current` yoxla, `nova auto on` et.
-4. Xüsusi komanda görünmür — `nova cmd` ilə siyahını yoxla, sonra `source ~/.bashrc` işlə.
-5. Əvvəlki prompt itdi — quraşdırıcının saxladığı `~/.bashrc.nova-backup-*` fayllarını nəzərdən keçir; `nova restore` ən son backup-u tam geri yazır və sonrakı əl dəyişikliklərini əvəz edə bilər.
-
-## 10 — Uninstall and privacy
-
-**9. Silmək və şəxsi məlumatlar.** Əvvəl avtomatik bərpanı söndür, sonra Nova hook sətrlərini və CLI-ni sil. Aşağıdakı son sətr konfiqurasiya, öz komandaların və cache-i **birdəfəlik silir**; lazım deyilsə onu işlətmə.
+Nova-nın avtomatik aktivləşməsini söndürmək və quraşdırma hook-larını silmək üçün bu blokdan istifadə et. Bu addımlar mövcud terminal rənglərini avtomatik əvvəlki hala qaytarmır.
 
 ```bash
 nova auto off
-sed -i '/# termux-nova$/d' ~/.bashrc
-sed -i '/# termux-nova$/d' ~/.bash_profile
+[ -f "$HOME/.bashrc" ] && sed -i '/# termux-nova$/d' "$HOME/.bashrc"
+[ -f "$HOME/.bash_profile" ] && sed -i '/# termux-nova$/d' "$HOME/.bash_profile"
 rm -f "$PREFIX/bin/nova"
-# OPTIONAL — irreversible data deletion:
-rm -rf ~/.config/termux-nova ~/.cache/termux-nova
 ```
 
-Xüsusi komandaların məzmununu `~/.config/termux-nova/commands` faylında yoxlaya bilərsən. Komandaya token və şifrə əlavə etmə: şəxsi məlumatlar diskdə qalır və yazılan komandalar icra olunur. Bu versiyada SQLite komanda tezliyi/ghost-autosuggestion funksiyası sənədləşdirilmir, çünki hazırkı kodda yoxdur.
+**İstəyə bağlı — şəxsi ayar və xüsusi komandaları həmişəlik silmək:** yalnız ehtiyat nüsxəsini saxladıqdan sonra `rm -rf ~/.config/termux-nova ~/.cache/termux-nova` işlət.
+
+**Qeyd:** Bu versiya Bash əsaslı tema/komanda meneceridir. Hazırkı kodda SQLite komanda sayı, boz autosuggestion və Tab ilə qəbul funksiyası yoxdur. Android-in yerli düymələri və menyuları da dəyişdirilmir.
 
 ---
 
-**Müəllif:** rugo · [RuslanSharifov](https://github.com/RuslanSharifov). [Bütün dillər və platformalar](../README.md).
+Hazırladı: **rugo · Ruslan Sharifov**. · [GitHub](https://github.com/RuslanSharifov/termux-nova)

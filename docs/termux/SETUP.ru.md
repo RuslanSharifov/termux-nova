@@ -1,78 +1,39 @@
-# Полное руководство по установке в Termux
+# Termux Nova — установка в Android Termux
 
-> **Termux Nova v2.x** · **RU** · [Windows CMD](../cmd/SETUP.ru.md) · [Documentation index](../README.md)
+[← Главный README и демо](../../README.md) · [Инструкция Windows CMD](../cmd/SETUP.ru.md)
 
-Здесь описаны установка, настройка, обновление, устранение ошибок и удаление termux-nova в **Termux на Android**. Для компьютера Windows откройте [руководство CMD](../cmd/SETUP.ru.md).
+## 1. Установка — один блок для вставки
 
-## Requirements / 01
-
-Android и актуальная сборка Termux из F-Droid либо официального GitHub, интернет для первой установки и свободное место. Root не требуется. Команды ниже выполняются **в Termux**, а не в Windows CMD.
-
-## 02 — Prepare Termux
-
-**1. Подготовьте Termux.** Запустите приложение, обновите пакеты и установите Git. `pkg` — пакетный менеджер Termux; `git` скачивает репозиторий.
-
+**Скопируйте весь блок ниже и один раз вставьте в Termux.** Он скачает репозиторий, установит Nova и в конце выполнит `clear`.
 
 ```bash
-pkg update && pkg upgrade -y
-pkg install -y git
+pkg update -y && pkg install -y git && \
+cd "$HOME" && \
+git clone https://github.com/RuslanSharifov/termux-nova.git && \
+cd termux-nova && \
+bash install.sh && \
+source "$HOME/.bashrc" && \
+clear
 ```
 
+При установке могут появиться вопросы об отключении других инструментов оформления и автоматическом восстановлении темы. Внимательно прочитайте их; **Enter = да** для авто-восстановления. В следующих интерактивных сессиях Termux Nova запускается автоматически.
 
-## 03 — Download the project (Git)
+> Если `~/termux-nova` уже существует, `git clone` остановится. В этом случае используйте раздел **Обновление** ниже.
 
-**2. Клонируйте репозиторий.** `cd ~` переходит в домашний каталог, `git clone` скачивает проект, последний `cd` открывает его папку.
+## 2. Как пользоваться Nova
 
-```bash
-cd ~
-git clone https://github.com/RuslanSharifov/termux-nova.git
-cd termux-nova
-ls
-```
-
-**Альтернатива: ZIP без Git.** Эти команды скачивают архив ветки `main`. Выберите только один способ — Git или ZIP; для обновления ZIP потребуется повторно скачать архив.
+Снова откройте Termux или выполните эти команды после установки. Меню настроек открывается через `nova console`.
 
 ```bash
-pkg install -y curl unzip
-cd ~
-curl -fL https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip -o termux-nova.zip
-unzip termux-nova.zip
-cd termux-nova-main
-ls
-```
-
-## 04 — Install and activate
-
-**3. Запустите установщик.** Через `ls` проверьте наличие `install.sh`, `nova.sh` и `themes/`, затем запустите Bash-скрипт.
-
-```bash
-ls install.sh nova.sh themes
-bash install.sh
-```
-
-Установщик добавляет `termux-tools` и `curl`, копирует команду `nova` и темы, устанавливает автозапуск в `~/.bashrc`. Он спрашивает, отключить ли конфликтующие UI-инструменты; при согласии создаёт резервные копии rc-файлов с датой. Для автоматического восстановления темы **Enter = да**, `n` = нет. Тема по умолчанию — `nova-dark`. Откройте новую сессию Termux или выполните `source ~/.bashrc` в текущем Bash.
-
-```bash
-source ~/.bashrc
-```
-
-**Внимание:** внимательно прочитайте предложение отключить другие инструменты оформления. Установщик комментирует соответствующие строки в rc-файлах; сохраните важные настройки отдельно.
-
-## 05 — Verify and configure
-
-**4. Проверьте установку и откройте меню.** `nova doctor` показывает диагностику, `nova console` открывает меню настроек. `nova list` выводит темы, `nova current` — текущую конфигурацию.
-
-```bash
-command -v nova
-nova doctor
 nova console
 nova list
 nova current
+nova doctor
 ```
 
-## 06 — Themes and startup
+## 3. Темы и автозапуск
 
-**5. Темы и автозапуск.** `nova set dracula` применяет цвета; `nova auto on` восстанавливает выбранную тему при следующих запусках. Большой баннер можно включать при запуске и после `clear` в `nova console`. Программа меняет оформление терминала, **но не кнопки приложения Android**.
+Встроенные темы: `nova-dark`, `dracula`, `nord`, `gruvbox`. `nova auto on` восстанавливает сохранённую тему при новом запуске. Баннер при запуске и после `clear` настраивается через `nova console`.
 
 ```bash
 nova set dracula
@@ -83,67 +44,50 @@ nova auto on
 nova banner
 ```
 
-## 07 — Custom commands: create, read, update, delete
+## 4. Свои команды — добавить, список, изменить, удалить
 
-**6. Создание своих команд (CRUD).** Триггер может начинаться с имени установленной программы. Разделитель `///` задаёт последовательные шаги; следующий выполнится только после успешного предыдущего. Для примера нужен Git.
+`///` разделяет последовательные шаги. Следующий выполняется только после успешного предыдущего. Пример использует Git (ставится при установке).
 
 ```bash
 nova cmd add "git quick" "git status /// git log -1 --oneline"
 nova cmd
 nova cmd edit "git quick" "git status --short"
 nova cmd rm "git quick"
-source ~/.bashrc
 ```
 
-Optional Node.js example (requires `pkg install nodejs` and an npm project):
+После изменения пользовательских команд откройте Termux снова или выполните `source ~/.bashrc`. Не храните пароли и токены в командах.
+
+## 5. Обновление установленной версии
+
+Если репозиторий уже скачан через Git, не клонируйте его повторно. Вставьте один блок обновления. Установщик может повторить вопросы.
 
 ```bash
-pkg install -y nodejs
-nova cmd add "npm run full" "npm install /// npm run dev"
-source ~/.bashrc
-npm run full
+cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc && clear
 ```
 
-`nova cache clear` rebuilds generated command wrappers if required.
+## 6. Устранение неполадок
 
-## 08 — Update an existing Git installation
+1. **`nova: command not found`** — снова откройте Termux; при необходимости `cd ~/termux-nova && bash install.sh`.
+2. **Цвета не изменились** — `pkg install -y termux-tools`, затем `nova set dracula`.
+3. **Тема сбрасывается** — проверьте `nova current` и включите `nova auto on`.
+4. **Своя команда не работает** — проверьте `nova cmd` и выполните `source ~/.bashrc`.
+5. **Предыдущее оформление изменилось** — проверьте копии `.nova-backup-*`. `nova restore` полностью заменяет `~/.bashrc` последней копией и может удалить более поздние правки.
 
-**7. Обновление.** В каталоге клонированного репозитория выполните `git pull --ff-only`, затем `bash install.sh`. Локальные изменения могут блокировать обновление — сначала сохраните их. Установщик может повторно задать вопросы.
+## 7. Удаление и безопасность {#uninstall}
 
-```bash
-cd ~/termux-nova
-git status
-git pull --ff-only
-bash install.sh
-source ~/.bashrc
-nova doctor
-```
-
-## 09 — Troubleshooting
-
-**8. Устранение неполадок.**
-
-1. `nova: command not found` — повторите `bash install.sh`, проверьте `command -v nova`, откройте новую сессию.
-2. Цвета не изменились — выполните `pkg install -y termux-tools` и `nova set dracula`, перезапустите приложение.
-3. Тема сбрасывается — проверьте `nova current` и включите `nova auto on`.
-4. Своя команда не работает — посмотрите `nova cmd`, выполните `source ~/.bashrc`.
-5. Исчез старый prompt — проверьте копии `~/.bashrc.nova-backup-*`; `nova restore` целиком заменяет `.bashrc` последней копией и может стереть более поздние правки.
-
-## 10 — Uninstall and privacy
-
-**9. Удаление и данные.** Отключите автозапуск, удалите строки Nova из `.bashrc` и установленную команду. Последняя строка ниже **безвозвратно удаляет** настройки, пользовательские команды и кэш; пропустите её, чтобы сохранить данные.
+Этот блок отключает восстановление темы и удаляет автозапуск/команду Nova. Прежние цвета терминала автоматически не восстанавливаются.
 
 ```bash
 nova auto off
-sed -i '/# termux-nova$/d' ~/.bashrc
-sed -i '/# termux-nova$/d' ~/.bash_profile
+[ -f "$HOME/.bashrc" ] && sed -i '/# termux-nova$/d' "$HOME/.bashrc"
+[ -f "$HOME/.bash_profile" ] && sed -i '/# termux-nova$/d' "$HOME/.bash_profile"
 rm -f "$PREFIX/bin/nova"
-# OPTIONAL — irreversible data deletion:
-rm -rf ~/.config/termux-nova ~/.cache/termux-nova
 ```
 
-Пользовательские команды находятся в `~/.config/termux-nova/commands`. Не сохраняйте в них пароли и токены: эти значения лежат в локальном файле и исполняются. Текущая версия не реализует SQLite-статистику или ghost-text автодополнение, поэтому они здесь не обещаются.
+**Необязательное полное удаление данных:** сначала сохраните нужные файлы, затем выполните `rm -rf ~/.config/termux-nova ~/.cache/termux-nova`.
+
+**Примечание:** текущая версия на Bash управляет темами и пользовательскими командами. Статистика SQLite, серые подсказки и принятие по Tab ещё не реализованы. Кнопки и меню Android не изменяются.
 
 ---
 
-**Автор:** rugo · [RuslanSharifov](https://github.com/RuslanSharifov). [Все языки и платформы](../README.md).
+Автор: **rugo · Ruslan Sharifov**. · [GitHub](https://github.com/RuslanSharifov/termux-nova)
