@@ -39,6 +39,16 @@ nova auto on
 nova banner
 ```
 
+### Büyük NOVA yazısını değiştir
+
+Yeni CMD penceresinde `nova console` aç, **Banner text** seçeneğini seç ve kendi metnini gir. Büyük/küçük harfler, sayılar, tüm yazdırılabilir ASCII sembolleri ve birçok Unicode karakter bloklarla çizilir; desteklenmeyenler `?` olur. En fazla 64 karakter; uzun metin satıra bölünür. Boş Enter orijinal NOVA afişini geri getirir.
+
+```cmd
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Özel komutlar — ekle, listele, düzenle, sil
 
 `///` sıralı çalıştırılacak komutları ayırır. Örnek için Git for Windows kurulmalıdır. Makroları güncellemek için değişiklikten sonra **yeni CMD penceresi aç**.

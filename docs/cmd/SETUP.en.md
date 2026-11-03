@@ -39,6 +39,16 @@ nova auto on
 nova banner
 ```
 
+### Change the large NOVA lettering
+
+In a new CMD window run `nova console`, choose **Banner text**, and enter your message. Uppercase/lowercase letters, numbers, all printable ASCII symbols and many Unicode characters render as blocks. Unsupported symbols display as `?`. Maximum 64 characters; long text wraps. Press Enter on empty input to restore the original NOVA art.
+
+```cmd
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Custom commands — create, list, edit, delete
 
 `///` separates commands executed in sequence. The example below requires Git for Windows to be installed. After changing shortcuts, **open a new CMD window** to load updated macros.

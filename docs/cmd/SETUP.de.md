@@ -39,6 +39,16 @@ nova auto on
 nova banner
 ```
 
+### Großen NOVA-Schriftzug ändern
+
+In einem neuen CMD-Fenster `nova console` öffnen, **Banner text** auswählen und den eigenen Text eingeben. Groß-/Kleinbuchstaben, Ziffern, alle druckbaren ASCII-Symbole und viele Unicode-Zeichen werden als Blöcke angezeigt; nicht unterstützte als `?`. Maximal 64 Zeichen, lange Texte werden umgebrochen. Leere Eingabe stellt das ursprüngliche NOVA-Banner wieder her.
+
+```cmd
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Eigene Befehle — hinzufügen, anzeigen, ändern, löschen
 
 `///` trennt nacheinander auszuführende Schritte. Für das Beispiel muss Git for Windows installiert sein. Nach Änderungen ein **neues CMD-Fenster** öffnen, damit die Makros neu geladen werden.

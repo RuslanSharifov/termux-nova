@@ -39,6 +39,16 @@ nova auto on
 nova banner
 ```
 
+### Modifier les grandes lettres NOVA
+
+Dans une nouvelle fenêtre CMD, lancez `nova console`, choisissez **Banner text** et saisissez votre message. Lettres majuscules/minuscules, chiffres, symboles ASCII imprimables et de nombreux caractères Unicode sont rendus en blocs ; les inconnus deviennent `?`. Maximum 64 caractères, avec retour à la ligne automatique. Une entrée vide restaure le logo NOVA d'origine.
+
+```cmd
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Commandes personnelles — ajouter, lister, modifier, supprimer
 
 `///` sépare les étapes exécutées successivement. L'exemple nécessite Git for Windows. Après modification des macros, **ouvrez une nouvelle fenêtre CMD**.
