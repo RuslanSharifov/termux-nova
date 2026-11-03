@@ -38,6 +38,7 @@ pkg install -y termux-tools curl
 echo "[2/6] Copying files..."
 mkdir -p "$NOVA_HOME/themes"
 cp "$ROOT"/themes/*.properties "$NOVA_HOME/themes/"
+cp "$ROOT/assets/banner-font.txt" "$NOVA_HOME/banner-font.txt"
 cp "$ROOT/nova.sh" "$BIN/nova"
 chmod +x "$BIN/nova"
 

@@ -11,6 +11,7 @@ REPO_TTL=21600   # refresh GitHub stats every 6 hours
 NOVA_HOME="$HOME/.config/termux-nova"
 NOVA_THEMES="$NOVA_HOME/themes"
 NOVA_CONF="$NOVA_HOME/config"
+NOVA_FONT="$NOVA_HOME/banner-font.txt"
 NOVA_CMDS="$NOVA_HOME/commands"
 NOVA_CACHE="$HOME/.cache/termux-nova"
 NOVA_ALIASES="$NOVA_CACHE/aliases.sh"
@@ -38,8 +39,78 @@ FRAMES=(⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏)
 ok()   { printf '%s✔%s %s\n' "$C_GR" "$C_RST" "$*"; }
 err()  { printf '%s✘%s %s\n' "$C_RD" "$C_RST" "$*"; }
 
+
+# Block-art banner renderer: 8x8 glyphs, one glyph per Unicode codepoint.
+render_banner_text() {
+  local text="$1" code r0 r1 r2 r3 r4 r5 r6 r7
+  local cols=80 max offset chunk i row ch glyph pixels line
+  local -A font=()
+  local -a rows=()
+  if [ ! -r "$NOVA_FONT" ]; then
+    printf ' %s\n' "$text"
+    return 0
+  fi
+  while IFS='|' read -r code r0 r1 r2 r3 r4 r5 r6 r7; do
+    [[ "$code" =~ ^[0-9A-F]+$ ]] || continue
+    font["$code"]="$r0|$r1|$r2|$r3|$r4|$r5|$r6|$r7"
+  done < "$NOVA_FONT"
+  if [ -t 1 ]; then
+    cols="$(tput cols 2>/dev/null || printf '80')"
+  fi
+  [[ "$cols" =~ ^[0-9]+$ ]] || cols=80
+  max=$(( (cols - 1) / 9 ))
+  (( max >= 1 )) || max=1
+  for ((offset=0; offset<${#text}; offset+=max)); do
+    chunk="${text:offset:max}"
+    for ((row=0; row<8; row++)); do
+      line=""
+      for ((i=0; i<${#chunk}; i++)); do
+        ch="${chunk:i:1}"
+        printf -v code '%04X' "'$ch"
+        glyph="${font[$code]:-${font[003F]}}"
+        IFS='|' read -r -a rows <<< "$glyph"
+        pixels="${rows[row]}"
+        pixels="${pixels//#/█}"
+        pixels="${pixels//./ }"
+        line+="$pixels "
+      done
+      printf '%s\n' "${line% }"
+    done
+  done
+}
+
+banner_text_valid() {
+  local text="$1"
+  [ -n "${text//[[:space:]]/}" ] &&
+    [ "${#text}" -le 64 ] &&
+    [[ ! "$text" =~ [[:cntrl:]] ]]
+}
+
+banner_set_text() {
+  local text="$1"
+  if ! banner_text_valid "$text"; then
+    err "Use 1-64 printable characters. Newlines/control characters are not allowed."
+    return 1
+  fi
+  conf_set BANNER_TEXT "$text" || return 1
+  ok "Banner text saved: $text"
+}
+
+banner_text_menu() {
+  local text
+  printf 'Current banner text: %s\n' "$(conf_get BANNER_TEXT NOVA)"
+  echo "Letters, numbers, punctuation and supported Unicode are rendered as blocks."
+  echo "Unsupported symbols appear as ?. Maximum 64 characters; long text wraps."
+  read -r -p "New banner text (Enter = reset to NOVA): " text
+  [ -n "$text" ] || text=NOVA
+  banner_set_text "$text"
+}
+
 show_banner() {
   printf '%s' "$C_CY$C_B"
+  if [ "$(conf_get BANNER_TEXT NOVA)" != "NOVA" ]; then
+    render_banner_text "$(conf_get BANNER_TEXT NOVA)"
+  else
   cat <<'BANNER'
  ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗
  ████╗  ██║██╔═══██╗██║   ██║██╔══██╗
@@ -48,6 +119,7 @@ show_banner() {
  ██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║
  ╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝
 BANNER
+  fi
   printf '%s' "$C_RST"
   printf '%s   Termux UI Theme Switcher  v%s  by rugo%s\n' "$C_DM" "$NOVA_VERSION" "$C_RST"
   show_repo_block
@@ -106,17 +178,19 @@ show_repo_block() {
 conf_get() {   # conf_get KEY [default]
   local v=""
   [ -f "$NOVA_CONF" ] && v="$(sed -n "s/^$1=//p" "$NOVA_CONF" | tail -n1)"
-  echo "${v:-$2}"
+  printf '%s\n' "${v:-$2}"
 }
 
 conf_set() {
+  local key="$1" value="$2" tmp
   mkdir -p "$NOVA_HOME"
-  touch "$NOVA_CONF"
-  if grep -q "^$1=" "$NOVA_CONF"; then
-    sed -i "s|^$1=.*|$1=$2|" "$NOVA_CONF"
-  else
-    echo "$1=$2" >> "$NOVA_CONF"
+  tmp="$(mktemp "$NOVA_HOME/.config.XXXXXX")" || return 1
+  if [ -f "$NOVA_CONF" ]; then
+    grep -v "^$key=" "$NOVA_CONF" > "$tmp" || true
   fi
+  printf '%s=%s\n' "$key" "$value" >> "$tmp"
+  chmod 600 "$tmp"
+  mv "$tmp" "$NOVA_CONF"
 }
 
 toggle_conf() {  # toggle_conf KEY  (default on)
@@ -450,6 +524,7 @@ console() {
     printf '  Banner on start    : %s\n' "$(conf_get BANNER_ON_START on)"
     printf '  Banner on clear    : %s\n' "$(conf_get BANNER_ON_CLEAR on)"
     printf '  Custom commands    : %s\n' "$(cmd_count)"
+    printf '  Banner text        : %s\n' "$(conf_get BANNER_TEXT NOVA)"
     echo
     echo "  1) Change theme"
     echo "  2) Toggle auto restore"
@@ -459,6 +534,7 @@ console() {
     echo "  6) Clear cache"
     echo "  7) Reset settings to defaults"
     echo "  8) Restore ~/.bashrc from backup"
+    echo "  9) Change banner text (Enter resets to NOVA)"
     echo "  0) Exit"
     echo
     read -r -p "Select: " c
@@ -473,6 +549,7 @@ console() {
          case "$sure" in y|Y|yes) reset_settings; ok "Settings reset"; ;; *) echo "Cancelled."; esac
          pause ;;
       8) echo; restore_rc; pause ;;
+      9) echo; banner_text_menu; pause ;;
       0|"") command clear; return ;;
       *) err "Invalid choice"; pause ;;
     esac
@@ -490,6 +567,8 @@ Usage: nova <command>
   current                      show all current settings
   auto on|off                  restore the saved theme on every start
   banner                       show the banner now
+  banner set "<text>"          set custom block banner text (1-64 chars)
+  banner reset                 restore the original NOVA banner
   cmd                          list custom commands
   cmd add "<trigger>" "<cmd>"  e.g. nova cmd add "npm run full" "npm i && npm run dev"
   cmd edit "<trigger>" "<cmd>"
@@ -510,7 +589,14 @@ main() {
     --start)       [ "$(conf_get BANNER_ON_START on)" = "on" ] && show_banner ;;
     --clear-hook)  [ "$(conf_get BANNER_ON_CLEAR on)" = "on" ] && show_banner ;;
     --run)         run_custom "$1" ;;
-    --banner|banner) show_banner ;;
+    --banner) show_banner ;;
+    banner)
+      case "$1" in
+        set) shift; banner_set_text "$*" && show_banner ;;
+        reset) conf_set BANNER_TEXT NOVA && show_banner ;;
+        ""|show) show_banner ;;
+        *) echo 'Usage: nova banner [set "<text>"|reset]'; return 1 ;;
+      esac ;;
     console|menu)  console ;;
     list)
       show_banner; list_themes ;;
@@ -524,7 +610,8 @@ main() {
       echo "Auto restore       : $(conf_get AUTO on)"
       echo "Banner on start    : $(conf_get BANNER_ON_START on)"
       echo "Banner on clear    : $(conf_get BANNER_ON_CLEAR on)"
-      echo "Custom commands    : $(cmd_count)" ;;
+      echo "Custom commands    : $(cmd_count)"
+       echo "Banner text        : $(conf_get BANNER_TEXT NOVA)" ;;
     auto)
       show_banner
       case "$1" in
