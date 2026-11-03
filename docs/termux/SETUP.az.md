@@ -44,6 +44,16 @@ nova auto on
 nova banner
 ```
 
+### Böyük NOVA yazısını dəyiş
+
+`nova console` menyusunda **9) Change banner text** seç. İstədiyin yazını daxil et və Enter bas. Böyük/kiçik hərflər, rəqəmlər, bütün əsas ASCII simvolları və bir sıra Azərbaycan/Unicode hərfləri bloklarla göstərilir. Dəstəklənməyən işarələr `?` olur. Maksimum 64 simvol; uzun mətn sətirlərə bölünür. Boş Enter əvvəlki NOVA yazısını qaytarır.
+
+```bash
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Xüsusi komandalar — əlavə et, bax, dəyiş, sil
 
 `///` ardıcıl addımları ayırır. Əvvəlki addım uğurlu olarsa, sonrakı işləyir. Aşağıdakı nümunə Git istifadə edir (quraşdırma zamanı Git qurulur).

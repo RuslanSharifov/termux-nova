@@ -44,6 +44,16 @@ nova auto on
 nova banner
 ```
 
+### Modifier les grandes lettres NOVA
+
+Dans `nova console`, choisissez **9) Change banner text**. Saisissez votre texte puis Entrée. Majuscules, minuscules, chiffres, ponctuation ASCII imprimable et de nombreux caractères Unicode s'affichent en blocs ; les caractères inconnus deviennent `?`. Maximum 64 caractères ; les textes longs passent à la ligne. Une entrée vide rétablit NOVA.
+
+```bash
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Commandes personnalisées — ajouter, lister, modifier, supprimer
 
 `///` sépare les étapes séquentielles. La suivante s'exécute seulement si la précédente réussit. L'exemple utilise Git (installé pendant la configuration).

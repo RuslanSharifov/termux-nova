@@ -44,6 +44,16 @@ nova auto on
 nova banner
 ```
 
+### Change the large NOVA lettering
+
+Open `nova console` and choose **9) Change banner text**. Enter your message and press Enter. Uppercase/lowercase letters, numbers, all printable ASCII punctuation and many Unicode characters render as blocks; unsupported characters show as `?`. Maximum 64 characters; long text wraps. Press Enter on an empty input to restore NOVA.
+
+```bash
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
 ## 4. Custom commands — add, list, edit, delete
 
 `///` separates sequential steps. Each step runs only if the previous one succeeds. This example uses Git (installed during setup).
