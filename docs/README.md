@@ -1,5 +1,8 @@
 # ✦ Termux Nova — Setup guides in 6 languages
 
+**Custom banner:** After installation, use `nova console` to replace the big NOVA block letters with your own text, or run `nova banner set "HELLO!"`. Use `nova banner reset` to restore the default.
+
+
 Choose your language and platform. **Installation is at the top of every guide; usage and troubleshooting come afterward.**
 
 | Language | Android Termux | Windows CMD |

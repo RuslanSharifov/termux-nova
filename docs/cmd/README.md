@@ -1,5 +1,8 @@
 # Windows CMD — choose your language
 
+**Customize the large banner:** `nova console` → **Banner text**, or `nova banner set "HELLO 2026!"`. Reset with `nova banner reset`.
+
+
 **No commands to paste for installation:**
 
 1. [Download termux-nova ZIP](https://github.com/RuslanSharifov/termux-nova/archive/refs/heads/main.zip).

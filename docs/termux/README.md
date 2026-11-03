@@ -1,5 +1,8 @@
 # Android Termux — choose your language
 
+**Customize the large banner:** `nova console` → **Change banner text**, or `nova banner set "HELLO 2026!"`. Reset with `nova banner reset`.
+
+
 **One paste installs Nova and clears the screen when finished:**
 
 ```bash

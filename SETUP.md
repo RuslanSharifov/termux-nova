@@ -1,5 +1,8 @@
 # ✦ TERMUX NOVA — Setup / Quraşdırma / Kurulum
 
+**New:** Customize the large cyan NOVA lettering with `nova console` → **Banner text**, or run `nova banner set "HELLO 2026!"`. Reset with `nova banner reset`. This works on Android and Windows CMD.
+
+
 **One simple install, then detailed help in your language.**
 
 ## 🤖 Android Termux — copy once

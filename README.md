@@ -62,6 +62,7 @@ Choose **your device first**, then your language. Each guide starts with the sam
 
 ## ✨ Features
 
+- **Editable block-art startup banner**: replace the large NOVA lettering with your own text, numbers or symbols; original NOVA remains the default.
 - **Large NOVA startup banner**, GitHub project information and an animated theme loader.
 - **Theme switching**: `nova-dark`, `dracula`, `nord`, `gruvbox`.
 - **Saved settings / auto restore**: run `nova auto on` to reapply your choice on new sessions.
@@ -96,6 +97,8 @@ nova help
 | `nova current` | Display saved settings |
 | `nova auto on` / `nova auto off` | Toggle automatic theme restoration |
 | `nova banner` | Show the banner |
+| `nova banner set "Hello!"` | Save a custom block-art banner text |
+| `nova banner reset` | Restore the original NOVA art |
 | `nova cmd` | List custom commands |
 | `nova cmd add "trigger" "steps"` | Create a shortcut |
 | `nova cmd edit "trigger" "steps"` | Edit a shortcut |
@@ -103,6 +106,27 @@ nova help
 | `nova cache clear` | Clear Nova's cache |
 | `nova hook` | Reinstall startup integration |
 | `nova doctor` | Diagnose integration |
+
+### ✍️ Customize the big NOVA banner
+
+The large cyan **NOVA** lettering can now be replaced with your own message on both Android Termux and Windows CMD.
+
+1. Run `nova console`.
+2. Choose **Change banner text** (Termux) or **Banner text** (Windows).
+3. Type your message and press Enter. The banner updates and remains saved for future sessions.
+4. Leave the input empty to reset to the original **NOVA** lettering.
+
+You can also change it directly:
+
+```bash
+nova banner set "RUSLAN 2026!"
+nova banner
+nova banner reset
+```
+
+The shared 8×8 block font includes **all 95 printable ASCII characters** (A–Z, a–z, 0–9, punctuation), Latin-1 accented letters, Greek characters, Azerbaijani/Turkish characters, Cyrillic letter approximations and several extra symbols. Unsupported characters display as `?`. Text is limited to 64 characters and wraps to fit the terminal. Settings are stored locally; this does **not** rename the GitHub project or change the attribution.
+
+The font atlas is [`assets/banner-font.txt`](assets/banner-font.txt). The base glyphs come from the [public-domain font8x8 project](https://github.com/dhepper/font8x8).
 
 ### Custom commands (CRUD)
 
@@ -145,6 +169,7 @@ termux-nova/
 │   ├── assets/termux-cmd-demo.svg      # Replaceable combined demo image
 │   ├── termux/SETUP.{az,en,tr,ru,de,fr}.md
 │   └── cmd/SETUP.{az,en,tr,ru,de,fr}.md
+├── assets/banner-font.txt               # Shared block glyph atlas
 ├── install.sh                           # Termux installer
 ├── nova.sh                              # Termux CLI
 ├── themes/                              # Android themes
