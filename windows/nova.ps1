@@ -494,6 +494,7 @@ function Open-Console {
       "Banner on start: $(Get-Conf 'BANNER_ON_START' 'on')",
       "Banner on clear: $(Get-Conf 'BANNER_ON_CLEAR' 'on')",
       "Custom commands ($(@(Read-Cmds).Count))",
+      "Banner text: $(Get-Conf 'BANNER_TEXT' 'NOVA')",
       'Clear cache',
       'Reset settings to defaults',
       'Reinstall cmd hooks',
@@ -506,14 +507,15 @@ function Open-Console {
       2 { Switch-Conf 'BANNER_ON_START' }
       3 { Switch-Conf 'BANNER_ON_CLEAR' }
       4 { Menu-Commands }
-      5 { Clear-Cache; Pause-Menu }
-      6 {
+      5 { Menu-BannerText }
+      6 { Clear-Cache; Pause-Menu }
+      7 {
           Remove-Item -Path $ConfFile -ErrorAction SilentlyContinue
           Set-Conf 'THEME' 'nova-dark'; Set-Conf 'AUTO' 'on'
           Set-Conf 'BANNER_ON_START' 'on'; Set-Conf 'BANNER_ON_CLEAR' 'on'
           Write-Ok 'Settings reset (custom commands kept)'; Pause-Menu
         }
-      7 { Install-Hooks; Write-Ok 'Hooks reinstalled. Open a new cmd window.'; Pause-Menu }
+      8 { Install-Hooks; Write-Ok 'Hooks reinstalled. Open a new cmd window.'; Pause-Menu }
       default { return }
     }
   }
@@ -541,6 +543,8 @@ Usage: nova <command>
   current                        show all current settings
   auto on|off                    restore the saved theme on every start
   banner                         show the banner now
+  banner set "<text>"            save custom block banner (1-64 characters)
+  banner reset                   restore original NOVA banner
   cmd                            list custom commands
   cmd add "<trigger>" "<steps>"  e.g. nova cmd add "salam" "npm i /// npm run dev"
   cmd edit "<trigger>" "<steps>"
@@ -558,7 +562,19 @@ switch ($Action.ToLower()) {
   'clearhook'   { if ((Get-Conf 'BANNER_ON_CLEAR' 'on') -eq 'on') { Show-Banner } }
   'dispatch'    { Invoke-Dispatch $Rest }
   'refreshrepo' { Invoke-RefreshRepo }
-  'banner'      { Show-Banner }
+  'banner' {
+    if ($Rest.Count -eq 0 -or $Rest[0] -eq 'show') {
+      Show-Banner
+    } elseif ($Rest[0] -eq 'reset') {
+      Set-Conf 'BANNER_TEXT' 'NOVA'
+      Show-Banner
+    } elseif ($Rest[0] -eq 'set' -and $Rest.Count -ge 2) {
+      $newText = ($Rest[1..($Rest.Count - 1)] -join ' ')
+      if (Set-BannerText $newText) { Show-Banner }
+    } else {
+      Write-Host 'Usage: nova banner [set "<text>"|reset]'
+    }
+  }
   'console'     { Open-Console }
   'menu'        { Open-Console }
   'list' {
@@ -580,6 +596,7 @@ switch ($Action.ToLower()) {
     Write-Host "Banner on start : $(Get-Conf 'BANNER_ON_START' 'on')"
     Write-Host "Banner on clear : $(Get-Conf 'BANNER_ON_CLEAR' 'on')"
     Write-Host "Custom commands : $(@(Read-Cmds).Count)"
+    Write-Host "Banner text     : $(Get-Conf 'BANNER_TEXT' 'NOVA')"
   }
   'auto' {
     Show-Banner
