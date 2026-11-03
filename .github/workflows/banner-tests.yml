@@ -1,0 +1,31 @@
+name: Banner renderer tests
+on:
+  push:
+    paths:
+      - 'nova.sh'
+      - 'install.sh'
+      - 'windows/nova.ps1'
+      - 'windows/install.ps1'
+      - 'assets/banner-font.txt'
+      - 'tests/test_banner.sh'
+      - '.github/workflows/banner-tests.yml'
+  pull_request:
+jobs:
+  banner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax
+        run: bash -n nova.sh && bash -n install.sh
+      - name: Banner behavior and glyph coverage
+        run: bash tests/test_banner.sh
+      - name: Windows PowerShell syntax
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile('windows/nova.ps1', [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_ }
+            exit 1
+          }
