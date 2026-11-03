@@ -16,6 +16,7 @@ $AppDir     = Join-Path $env:APPDATA 'termux-nova'
 $CacheDir   = Join-Path $env:LOCALAPPDATA 'termux-nova\cache'
 $ScriptPath = Join-Path $AppDir 'nova.ps1'
 $ConfFile   = Join-Path $AppDir 'config'
+$BannerFont = Join-Path $AppDir 'banner-font.txt'
 $CmdsFile   = Join-Path $AppDir 'commands'
 $MacroFile  = Join-Path $AppDir 'macros.txt'
 $ThemesFile = Join-Path $AppDir 'themes.json'
@@ -99,16 +100,78 @@ function Invoke-RefreshRepo {
   } catch {}
 }
 
+# ---------- editable block banner ----------
+function Set-BannerText([string]$Text) {
+  if ([string]::IsNullOrWhiteSpace($Text) -or $Text.Length -gt 64 -or $Text -match '[\x00-\x1F\x7F]') {
+    Write-Err 'Use 1-64 printable characters. Newlines/control characters are not allowed.'
+    return $false
+  }
+  Set-Conf 'BANNER_TEXT' $Text
+  Write-Ok "Banner text saved: $Text"
+  return $true
+}
+
+function Write-BannerArt {
+  $text = Get-Conf 'BANNER_TEXT' 'NOVA'
+  if ($text -eq 'NOVA') {
+    $art = @(
+      ' ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗',
+      ' ████╗  ██║██╔═══██╗██║   ██║██╔══██╗',
+      ' ██╔██╗ ██║██║   ██║██║   ██║███████║',
+      ' ██║╚██╗██║██║   ██║╚██╗ ██╔╝██╔══██║',
+      ' ██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║',
+      ' ╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝'
+    )
+    foreach ($l in $art) { Write-Host $l -ForegroundColor Cyan }
+    return
+  }
+  if (-not (Test-Path $BannerFont)) {
+    Write-Host " $text" -ForegroundColor Cyan
+    return
+  }
+  $glyphs = @{}
+  foreach ($line in [IO.File]::ReadAllLines($BannerFont, [Text.Encoding]::UTF8)) {
+    if ($line.StartsWith('#')) { continue }
+    $parts = $line.Split('|')
+    if ($parts.Length -eq 9) { $glyphs[$parts[0]] = @($parts[1..8]) }
+  }
+  $max = 8
+  try {
+    $cols = [Console]::WindowWidth
+    if ($cols -gt 0) { $max = [Math]::Max(1, [int][Math]::Floor(($cols - 1) / 9)) }
+  } catch {}
+  $chars = $text.ToCharArray()
+  for ($offset = 0; $offset -lt $chars.Length; $offset += $max) {
+    $last = [Math]::Min($chars.Length, $offset + $max)
+    for ($row = 0; $row -lt 8; $row++) {
+      $pieces = New-Object 'System.Collections.Generic.List[string]'
+      for ($j = $offset; $j -lt $last; $j++) {
+        $cp = '{0:X4}' -f [int]$chars[$j]
+        if (-not $glyphs.ContainsKey($cp)) { $cp = '003F' }
+        [void]$pieces.Add($glyphs[$cp][$row].Replace('#', '█').Replace('.', ' '))
+      }
+      Write-Host ($pieces -join ' ') -ForegroundColor Cyan
+    }
+  }
+}
+
+function Menu-BannerText {
+  Clear-Host
+  Show-Banner
+  Write-Host "Current banner text: $(Get-Conf 'BANNER_TEXT' 'NOVA')"
+  Write-Host 'Letters, digits and punctuation render as blocks; unsupported symbols show as ?.'
+  Write-Host 'Maximum 64 characters. Long text wraps to fit the window.'
+  $text = Read-Host 'New banner text (Enter = reset to NOVA)'
+  if ([string]::IsNullOrEmpty($text)) { $text = 'NOVA' }
+  if (Set-BannerText $text) {
+    Write-Host 'Preview:'
+    Write-BannerArt
+  }
+  Pause-Menu
+}
+
 function Show-Banner {
-  $art = @(
-    ' ███╗   ██╗ ██████╗ ██╗   ██╗ █████╗',
-    ' ████╗  ██║██╔═══██╗██║   ██║██╔══██╗',
-    ' ██╔██╗ ██║██║   ██║██║   ██║███████║',
-    ' ██║╚██╗██║██║   ██║╚██╗ ██╔╝██╔══██║',
-    ' ██║ ╚████║╚██████╔╝ ╚████╔╝ ██║  ██║',
-    ' ╚═╝  ╚═══╝ ╚═════╝   ╚═══╝  ╚═╝  ╚═╝'
-  )
-  foreach ($l in $art) { Write-Host $l -ForegroundColor Cyan }
+  Write-BannerArt
   Write-Host "   Termux UI Theme Switcher  v$NovaVersion  by rugo" -ForegroundColor DarkGray
   Show-RepoBlock
   Write-Host ''

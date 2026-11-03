@@ -13,6 +13,7 @@ Write-Host '[1/5] Copying files...'
 New-Item -ItemType Directory -Force -Path $app | Out-Null
 Copy-Item (Join-Path $src 'nova.ps1') $app -Force
 Copy-Item (Join-Path $src 'themes.json') $app -Force
+Copy-Item (Join-Path $src '..\assets\banner-font.txt') (Join-Path $app 'banner-font.txt') -Force
 Set-Content -Path (Join-Path $app 'nova.cmd') -Encoding ASCII -Value @(
   '@echo off',
   'powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0nova.ps1" %*'
