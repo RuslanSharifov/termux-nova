@@ -151,7 +151,7 @@ After editing shortcuts, start a **new CMD window** on Windows; on Termux, open 
 cd ~/termux-nova && git pull --ff-only && bash install.sh && source ~/.bashrc && clear
 ```
 
-**Windows:** download the latest ZIP again, extract it, and double-click `windows/install.cmd` in the new folder. The installer can update the installed files.
+**Windows:** download the latest ZIP again, extract it, and double-click `windows/install.cmd` in the new folder. The installer can update the installed files. **If `cls` previously left overlapping banner text, reinstall and open a NEW CMD window** so the corrected single-process `cls` macro is loaded. The fix clears the entire CMD screen before drawing the banner; turning off Banner on clear now still clears the screen.
 
 ## 🛠️ Help, safety and removal
 
