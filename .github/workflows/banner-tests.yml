@@ -48,3 +48,34 @@ jobs:
           & ./windows/nova.ps1 banner reset
           $conf = Get-Content (Join-Path $app 'config') -Raw
           if ($conf -notmatch 'BANNER_TEXT=NOVA') { throw 'Banner reset failed' }
+
+  windows-cls:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify native CMD clear and banner hook
+        shell: pwsh
+        run: |
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'nova-cmd-app'
+          $env:LOCALAPPDATA = Join-Path $env:RUNNER_TEMP 'nova-cmd-local'
+          $app = Join-Path $env:APPDATA 'termux-nova'
+          $cache = Join-Path $env:LOCALAPPDATA 'termux-nova/cache'
+          New-Item -ItemType Directory -Force -Path $app, $cache | Out-Null
+          Copy-Item windows/nova.ps1 (Join-Path $app 'nova.ps1')
+          Copy-Item windows/themes.json (Join-Path $app 'themes.json')
+          Copy-Item assets/banner-font.txt (Join-Path $app 'banner-font.txt')
+          Set-Content (Join-Path $cache 'repo.json') -Value '{}'
+          $nova = Join-Path $app 'nova.ps1'
+          & $nova hook | Out-Null
+          $macro = (Get-Content (Join-Path $app 'macros.txt') | Where-Object { $_ -like 'cls=*' })
+          if ($macro.Count -ne 1) { throw "Expected exactly one cls macro: $macro" }
+          if ($macro -notmatch 'cls=powershell .*clearhook$') { throw "Unexpected cls macro: $macro" }
+          if ($macro -match 'cls=cls') { throw 'Old two-command cls macro remains' }
+          & $nova banner set 'BANNER TEST' | Out-Null
+          & $nova clearhook
+          if (-not $?) { throw 'clearhook failed with banner enabled' }
+          & $nova banner reset | Out-Null
+          $config = Join-Path $app 'config'
+          Add-Content -Path $config -Value 'BANNER_ON_CLEAR=off'
+          & $nova clearhook
+          if (-not $?) { throw 'clearhook failed with banner disabled' }
