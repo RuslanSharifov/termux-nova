@@ -100,6 +100,25 @@ function Invoke-RefreshRepo {
   } catch {}
 }
 
+# ---------- Windows CMD screen clearing ----------
+# Perform clearing and banner rendering in the SAME PowerShell process.
+# The old doskey macro chained a separate CMD 'cls' and PowerShell invocation;
+# the second process could leave stale text/art above the new banner.
+function Clear-NovaScreen {
+  try {
+    [Console]::Out.Flush()
+    [Console]::Clear()
+    [Console]::SetCursorPosition(0, 0)
+  } catch {
+    # Fallback for hosts where the .NET console handle is unavailable.
+    if ($env:OS -eq 'Windows_NT' -and $env:ComSpec) {
+      & $env:ComSpec /d /c cls
+    } else {
+      Clear-Host
+    }
+  }
+}
+
 # ---------- editable block banner ----------
 function Set-BannerText([string]$Text) {
   if ([string]::IsNullOrWhiteSpace($Text) -or $Text.Length -gt 64 -or $Text -match '[\x00-\x1F\x7F]') {
@@ -156,7 +175,7 @@ function Write-BannerArt {
 }
 
 function Menu-BannerText {
-  Clear-Host
+  Clear-NovaScreen
   Show-Banner
   Write-Host "Current banner text: $(Get-Conf 'BANNER_TEXT' 'NOVA')"
   Write-Host 'Letters, digits and punctuation render as blocks; unsupported symbols show as ?.'
@@ -184,7 +203,7 @@ function Select-Menu {
   $sel = 0
   $buf = ''
   while ($true) {
-    Clear-Host
+    Clear-NovaScreen
     if (-not $NoBanner) { Show-Banner }
     if ($Title) { Write-Host $Title -ForegroundColor Yellow }
     for ($i = 0; $i -lt $Items.Count; $i++) {
@@ -353,7 +372,7 @@ function Remove-Cmd([string]$Key) {
 function Rebuild-Macros {
   New-Item -ItemType Directory -Force -Path $AppDir | Out-Null
   $run = "powershell -NoProfile -ExecutionPolicy Bypass -File `"$ScriptPath`""
-  $lines = @("cls=cls `$T $run clearhook")
+  $lines = @("cls=$run clearhook")
   $firsts = @(Read-Cmds | ForEach-Object { ($_.Key -split ' ')[0] } | Sort-Object -Unique)
   foreach ($f in $firsts) { $lines += "$f=$run dispatch $f `$*" }
   Set-Content -Path $MacroFile -Value $lines -Encoding ASCII
@@ -393,7 +412,7 @@ function Invoke-Start {
     }
   }
   if ((Get-Conf 'BANNER_ON_START' 'on') -eq 'on') {
-    Clear-Host
+    Clear-NovaScreen
     Show-Banner
   }
 }
@@ -559,7 +578,7 @@ Usage: nova <command>
 # ---------- entry point ----------
 switch ($Action.ToLower()) {
   'start'       { Invoke-Start }
-  'clearhook'   { if ((Get-Conf 'BANNER_ON_CLEAR' 'on') -eq 'on') { Show-Banner } }
+  'clearhook'   { Clear-NovaScreen; if ((Get-Conf 'BANNER_ON_CLEAR' 'on') -eq 'on') { Show-Banner } }
   'dispatch'    { Invoke-Dispatch $Rest }
   'refreshrepo' { Invoke-RefreshRepo }
   'banner' {
